@@ -15,17 +15,21 @@ import java.util.Set;
 @Setter
 @Getter
 public class User extends BaseEntity {
-    private String username;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    private String img;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "user_read_stories",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -33,7 +37,7 @@ public class User extends BaseEntity {
     )
     Set<Story> readStories = new HashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "user_liked_stories",
             joinColumns = @JoinColumn(name = "user_id"),
