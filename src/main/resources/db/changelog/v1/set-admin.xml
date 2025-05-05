@@ -4,6 +4,9 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="add-admin-user" author="StudentPP1">
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="app_user"/>
+        </preConditions>
         <insert tableName="app_user">
             <column name="id" value="1"/>
             <column name="name" value="admin"/>
