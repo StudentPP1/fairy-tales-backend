@@ -9,7 +9,6 @@ services:
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=stories
   redis:
     container_name: cache_redis
     image: redis
@@ -17,7 +16,7 @@ services:
       - "6379:6379"
   app:
     container_name: backend_app
-    build: ./
+    build: .
     image: app
     depends_on:
       - db

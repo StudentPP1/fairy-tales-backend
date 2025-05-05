@@ -21,8 +21,8 @@ public class BaseEntity {
     private Long id;
 
     @CreationTimestamp
-    private Instant createAt;
+    private Instant createdAt;
 
     @UpdateTimestamp
-    private Instant updateAt;
+    private Instant updatedAt;
 }
