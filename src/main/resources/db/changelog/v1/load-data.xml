@@ -1,0 +1,130 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="10-insert-stories" author="StudentPP1">
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="story"/>
+        </preConditions>
+        <insert tableName="story">
+            <column name="id" value="1"/>
+            <column name="title" value="Ivasyk-Telesyk"/>
+            <column name="description" value="An old man and old woman have no children. Because of this, the old woman asks the old man to carve a log out of a tree so that she can have a son. She places the log in a cradle. The next day, the log turns into a real boy. Since it was carved, it is called Ivasyk-Telesyk. "/>
+            <column name="text" value="An old man and old woman have no children. Because of this, the old woman asks the old man to carve a log out of a tree so that she can have a son. She places the log in a cradle. The next day, the log turns into a real boy. Since it was carved, it is called Ivasyk-Telesyk.
+
+When Ivasyk-Telesyk grows up, he asks the old man, his father, to make him a boat and an oar so that the boy can fish. By fishing, Ivasyk-Telesyk feeds his parents. Because an evil snake walks along the shore, Ivasyk-Telesyk's mother warns him to only swim to the shore and eat when he hears his mother's voice alone.
+
+The snake attempts to deceive Ivasyk-Telesyk by repeating his mother's words, but the boy hears the difference and does not listen. The snake then goes to the blacksmith to forge another voice for her. Hearing the snake with its new voice forged by the blacksmith, Ivasyk-Telesyk cannot distinguish the snake's voice from his mother's, and thus fooled, swims to shore. Having tricked the boy, the snake then grabs the boy and carries Ivasyk-Telesyk to the snake's home.
+
+At the snake's home, the snake orders its daughter to bake Ivasyk-Telesik in the oven and to call guests. The snake's daughter tells Ivasyk-Telesyk to sit on a shovel so that she can push him into the furnace. Ivasyk-Telesyk pretends that he does not know how, and asks the snake's daughter to show him herself. When the snake's daughter sits on the shovel to show him, Ivasyk-Telesyk surprises the snake's daughter and pushes her into the oven himself.
+
+When guests come to the snake's house, they eat her baked daughter, not knowing who it really is. When they have finished, from outside Ivasyk-Telesyk tells the guests they have eaten the snake's daughter. The guests and snake try to grab the boy, but he climbs a tree, which the snake and its guests want to chew through in order to get him down. When their attempt fails, they go to the blacksmith to make them iron teeth.
+
+With new iron teeth from the blacksmith, the snake and its guests almost manage to chew through the tree. Seeing the danger, Ivasyk-Telesyk asks a flock of geese flying by to pick him up. Three flocks appear, and one after the other they refuse. Finally, a young goose picks up Ivasyk-Telesyk on its wings, and while struggling to carry the boy's weight, delivers him home.
+
+Once returned home, standing outside, the boy hears his mother counting pies, and asks for one pie for himself. The old man and old woman do not hear his words at first, but then they recognize their son's voice and let Ivasyk-Telesyk into the house. The old woman sees the young goose and thinks of eating it, but Ivasyk-Telesyk tells how the goose saved him. The old man and old woman then feed the goose and give it grain for its journey."/>
+            <column name="img_url" value="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Stamp_of_Ukraine_s595.jpg/375px-Stamp_of_Ukraine_s595.jpg"/>
+            <column name="liked_count" valueNumeric="5"/>
+            <column name="created_at" valueDate="2025-01-01T12:00:00"/>
+            <column name="updated_at" valueDate="2025-01-01T12:00:00"/>
+        </insert>
+        <insert tableName="story">
+            <column name="id" value="2"/>
+            <column name="title" value="Little Red Riding Hood"/>
+            <column name="description" value="Little Red Riding Hood
+Brave the dark woods with Little Red Riding Hood as she encounters a cunning wolf in this timeless tale of ..."/>
+            <column name="text" value="Once upon a time, in a cozy village surrounded by a deep green forest, there lived a sweet little girl named Little Red Riding Hood. She was called that because of the bright red hooded cloak her grandmother had sewn just for her. It was her favorite thing to wear.
+
+Little Red loved visiting her grandmother, who lived in a cottage on the other side of the woods.
+
+One sunny morning, her mother packed a small basket with warm muffins, a jar of golden honey, and some herbal tea. “Take this to Grandma and stay on the path,” her mother said. “And remember—never talk to strangers.”
+
+“I promise, Mama,” Little Red said cheerfully and skipped off into the forest, her red cloak fluttering behind her like a flag.
+
+As she followed the winding trail, the birds chirped overhead and butterflies danced beside her. But hidden behind a tree, a sneaky gray wolf watched with sharp eyes.
+
+The wolf stepped out and smiled in a friendly way. “Good morning, little one. Where are you going with that lovely basket?”
+
+“To visit my grandmother,” Little Red replied politely. “She’s not feeling well, so I’m bringing her some treats.”
+
+“Ah,” said the wolf, pretending to care. “What a kind girl you are! Wouldn’t some fresh flowers make her feel even better? There’s a meadow just over there.”
+
+Little Red looked and saw a sunny patch full of colorful wildflowers. “That’s a great idea!” she said and walked over to pick a few.
+
+While she gathered flowers, the wolf dashed off to Grandma’s cottage, his paws barely making a sound.
+
+When he arrived, he knocked on the door. Grandma, who was resting in bed, called out, “Come in!” But when she saw the wolf, she gasped. Quick as a flash, he locked her in the closet and put on her cap and glasses.
+
+A little while later, Little Red arrived and knocked. “Grandma, it’s me!” she called. “I brought you muffins and honey!”
+
+“Come in, my dear,” the wolf said in a high, squeaky voice.
+
+Little Red stepped inside but paused. Something felt strange.
+
+“Grandma, what big eyes you have,” she said slowly.
+
+“The better to see you with, my dear,” the wolf replied.
+
+“And what big ears you have!”
+
+“The better to hear you with.”
+
+“And… what big teeth you have!” Little Red said, taking a step back.
+
+“The better to eat you with!” the wolf growled, leaping out of bed.
+
+Just as he jumped toward her, the door burst open! A brave woodsman had been passing by and heard the strange voices. With a loud shout, he rushed in and scared the wolf away with his axe.
+
+The woodsman opened the closet and helped Grandma out. She gave Little Red a big, relieved hug.
+
+From that day on, Little Red Riding Hood never wandered from the path again and never spoke to strangers, no matter how friendly they seemed.
+
+She thanked the woodsman with a warm muffin and a smile—and always remembered the adventure in the forest.
+
+The End!"/>
+            <column name="img_url" value="https://www.readthetale.com/wp-content/uploads/2024/08/Untitled-4.jpg"/>
+            <column name="liked_count" valueNumeric="3"/>
+            <column name="created_at" valueDate="2025-01-02T14:30:00"/>
+            <column name="updated_at" valueDate="2025-01-02T14:30:00"/>
+        </insert>
+        <insert tableName="story">
+            <column name="id" value="3"/>
+            <column name="title" value="The Ugly Duckling"/>
+            <column name="description" value="Embrace the transformative journey of the Ugly Duckling as it discovers its true beauty ..."/>
+            <column name="text" value="Once upon a time, in a quiet pond with tall plants and pretty flowers around it, a mother duck waited excitedly for her eggs to hatch. Finally, the day came when one egg cracked open, and out came a tiny, grayish duckling. Even though the mother duck loved all her babies, she noticed that this little one looked different from the rest.
+
+“My dear, you may not be as pretty as your siblings, but you are just as special,” she said, giving the duckling lots of love.
+
+But as the days passed, the little duckling noticed that the other ducklings made fun of him because he looked different. Feeling sad and alone, he decided to leave the pond and find a place where he could belong.
+
+He traveled through fields and woods, hoping to find friends who would accept him for who he was. Along the way, he met other animals who wondered about his different look.
+
+“You don’t look like us,” said the rabbits.
+
+“Why are you so gray?” asked the bluebirds.
+
+The little duckling felt sad with every question, but he kept going, hoping to find his real home.
+
+As autumn came, he found a beautiful lake shining in the sunlight. There, he saw a group of beautiful swans swimming on the water, their wings shining like silver.
+
+Enchanted by their beauty, the little duckling went to them. But as he got closer, he was unsure, remembering how he had been treated before. He was afraid the swans would not want him too.
+
+To his surprise, the swans welcomed him. “Hello there, little friend. You are welcome to join us,” said the kindest swan.
+
+“But I’m not beautiful like you. I’m just an ugly duckling,” he said with a bit of sadness.
+
+The kind swan smiled. “You may think that now, but beauty is not just about looks. It’s about being kind, brave, and true to yourself. Come, let us be friends.”
+
+With new hope and happiness, the little duckling joined his new friends. As time passed, he felt a feeling of fitting in he had never felt before. He swam with the swans, played games, and laughed under the moon.
+
+One morning, as he looked at his reflection in the lake, he saw a beautiful creature staring back at him. His once dull feathers had turned white, and he realized that he had grown into a beautiful swan, just like his new friends.
+
+From that day on, the little duckling was no longer the “Ugly Duckling.” He had become a brave and graceful swan, ready to face any challenge that came his way. And he knew that true beauty was inside."/>
+            <column name="img_url" value="https://www.readthetale.com/wp-content/uploads/2024/08/Bedtime-Story-The-Ugly-Duckling-1.jpg"/>
+            <column name="liked_count" valueNumeric="0"/>
+            <column name="created_at" valueDate="2025-01-03T09:15:00"/>
+            <column name="updated_at" valueDate="2025-01-03T09:15:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

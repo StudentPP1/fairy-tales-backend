@@ -1,0 +1,100 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- ====== USER TABLE INIT ====== -->
+    <changeSet id="1-create-user" author="StudentPP1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="app_user"/>
+            </not>
+        </preConditions>
+        <createTable tableName="app_user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(50)"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ====== STORY TABLE INIT ====== -->
+    <changeSet id="2-create-story" author="StudentPP1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="story"/>
+            </not>
+        </preConditions>
+        <createTable tableName="story">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="img_url" type="VARCHAR(1024)"/>
+            <column name="text" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="liked_count" type="INT" defaultValueNumeric="0"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <!-- ====== USER_STORY LINK TABLES ====== -->
+    <changeSet id="3-create-user-read-stories" author="StudentPP1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_read_stories"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_read_stories">
+            <column name="user_id" type="BIGINT"/>
+            <column name="story_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="user_read_stories" baseColumnNames="user_id"
+                referencedTableName="app_user" referencedColumnNames="id"
+                constraintName="fk_user_read_user"/>
+        <addForeignKeyConstraint
+                baseTableName="user_read_stories" baseColumnNames="story_id"
+                referencedTableName="story" referencedColumnNames="id"
+                constraintName="fk_user_read_story"/>
+    </changeSet>
+
+    <changeSet id="4-create-user-liked-stories" author="StudentPP1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user_liked_stories"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_liked_stories">
+            <column name="user_id" type="BIGINT"/>
+            <column name="story_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="user_liked_stories" baseColumnNames="user_id"
+                referencedTableName="app_user" referencedColumnNames="id"
+                constraintName="fk_user_liked_user"/>
+        <addForeignKeyConstraint
+                baseTableName="user_liked_stories" baseColumnNames="story_id"
+                referencedTableName="story" referencedColumnNames="id"
+                constraintName="fk_user_liked_story"/>
+    </changeSet>
+
+</databaseChangeLog>
