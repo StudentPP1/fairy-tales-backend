@@ -18,20 +18,20 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "app_user")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements AppUser {
     @Column(nullable = false)
     private String name;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String img;
+    private String img = null;
 
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
 
     @OneToMany(mappedBy = "user")
     private List<UserConnectedAccount> connectedAccounts = new ArrayList<>();

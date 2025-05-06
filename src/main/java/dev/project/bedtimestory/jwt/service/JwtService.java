@@ -1,7 +1,7 @@
 package dev.project.bedtimestory.jwt.service;
 
+import dev.project.bedtimestory.entity.AppUser;
 import dev.project.bedtimestory.utils.ApplicationProperties;
-import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.response.AuthenticationResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,10 +25,10 @@ import java.util.function.Function;
 public class JwtService {
     private final ApplicationProperties applicationProperties;
     private final static int TO_MILLIS = 1000;
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(AppUser user) {
         return buildToken(user, applicationProperties.getJwtAccessTokenExpiration());
     }
-    public void setRefreshTokenToCookie(User user, HttpServletResponse response) {
+    public void setRefreshTokenToCookie(AppUser user, HttpServletResponse response) {
         var refreshToken = this.generateRefreshToken(user);
         Cookie refreshTokenCookie = new Cookie(
                 applicationProperties.getJwtRefreshTokenName(),
@@ -41,7 +41,7 @@ public class JwtService {
         log.info("jwtService: set new refresh token to cookie");
         response.addCookie(refreshTokenCookie);
     }
-    public AuthenticationResponse validateAndSendTokens(User user, String token, HttpServletResponse response) throws AccessDeniedException {
+    public AuthenticationResponse validateAndSendTokens(AppUser user, String token, HttpServletResponse response) throws AccessDeniedException {
         this.isTokenValid(token);
         String newAccessToken = this.generateAccessToken(user);
         this.setRefreshTokenToCookie(user, response);
@@ -74,10 +74,10 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
-    private String generateRefreshToken(User user) {
+    private String generateRefreshToken(AppUser user) {
         return buildToken(user, applicationProperties.getJwtRefreshTokenExpiration());
     }
-    private String buildToken(User user, long expiration) {
+    private String buildToken(AppUser user, long expiration) {
         return Jwts.builder()
                 .expiration(new Date(System.currentTimeMillis() + expiration * TO_MILLIS))
                 .issuedAt(new Date())
