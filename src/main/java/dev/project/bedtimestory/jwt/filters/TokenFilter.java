@@ -1,9 +1,7 @@
 package dev.project.bedtimestory.jwt.filters;
 
 import dev.project.bedtimestory.auth.service.AuthService;
-import dev.project.bedtimestory.auth.service.UserDetailsServiceImpl;
 import dev.project.bedtimestory.jwt.service.JwtService;
-import dev.project.bedtimestory.security.AppUserDetails;
 import dev.project.bedtimestory.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public abstract class TokenFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserDetailsServiceImpl userService;
+    private final UserService userService;
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -46,14 +44,13 @@ public abstract class TokenFilter extends OncePerRequestFilter {
     ) throws IOException, ServletException {
         log.info("TokenFilter: validation token");
         if (jwtService.isTokenValid(token)) {
-            String email = jwtService.extractSubject(token);
+            Long id = jwtService.extractUserId(token);
             log.info("TokenFilter: get user email from token");
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 log.info("TokenFilter: find user by email");
-                UserDetails user = userService.loadUserByUsername(email);
+                UserDetails user = userService.getUserDetailsById(id);
                 log.info("TokenFilter: register user in context");
                 AuthService.authenticateUserInSecurityContext(user);
-
             }
         }
         filterChain.doFilter(request, response);

@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -50,8 +51,8 @@ public class JwtService {
                 .accessToken(newAccessToken)
                 .build();
     }
-    public String extractSubject(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public Long extractUserId(String token) {
+        return Long.valueOf(extractClaim(token, Claims::getSubject));
     }
     public boolean isTokenValid(String token) throws AccessDeniedException {
         if (isTokenExpired(token)) throw new AccessDeniedException("Token expired");
@@ -81,7 +82,8 @@ public class JwtService {
         return Jwts.builder()
                 .expiration(new Date(System.currentTimeMillis() + expiration * TO_MILLIS))
                 .issuedAt(new Date())
-                .subject(user.getEmail())
+                // ! to avoid empty email like from GitHub oauth2
+                .subject(String.valueOf(user.getId()))
                 .signWith(getSignInKey())
                 .compact();
     }
