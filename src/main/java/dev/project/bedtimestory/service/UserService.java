@@ -21,17 +21,14 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository
                 .findByEmail(email)
-                .orElseThrow(() -> ApiException.builder().status(404).message("User not found").build());
+                .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND.value()));
     }
     public User save(User user) {
         return userRepository.save(user);
     }
     public UserDto getUserDto(Long userId) {
         return userRepository.getUserDtoById(userId)
-                .orElseThrow(() -> ApiException.builder()
-                        .message("User not found")
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .build());
+                .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND.value()));
     }
     public List<StoryDto> getReadStories(Long userId) {
         return userRepository.findReadStoryByUserId(userId);

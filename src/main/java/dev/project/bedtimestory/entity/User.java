@@ -31,7 +31,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
-    private boolean isSubscribed;
+    private boolean isSubscribed = false;
 
     @OneToMany(mappedBy = "user")
     private List<UserConnectedAccount> connectedAccounts = new ArrayList<>();

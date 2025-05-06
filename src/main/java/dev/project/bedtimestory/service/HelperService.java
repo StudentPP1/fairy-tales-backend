@@ -15,17 +15,11 @@ public class HelperService {
     private final UserRepository userRepository;
     private final StoryRepository storyRepository;
     User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() ->
-                ApiException.builder()
-                        .message("User not found")
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .build());
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND.value()));
     }
     Story getStoryById(Long storyId) {
-        return storyRepository.findById(storyId).orElseThrow(() ->
-                ApiException.builder()
-                        .message("Story not found")
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .build());
+        return storyRepository.findById(storyId)
+                .orElseThrow(() -> new ApiException("Story not found", HttpStatus.NOT_FOUND.value()));
     }
 }

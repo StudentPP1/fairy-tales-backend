@@ -73,7 +73,7 @@ public class AuthService {
         ).orElseThrow(
                 () -> new ApiException("refreshToken isn't present")
         );
-        return jwtService.validateAndSendTokens(AuthUtils.getAuthenticatedUser().getUser(), refreshToken, response);
+        return jwtService.validateAndSendTokens(AuthUtils.getAuthenticatedUser().user(), refreshToken, response);
     }
     private ResponseEntity<AuthenticationResponse> saveUserInContextAndSendTokens(User user, @NonNull HttpServletResponse response) {
         authenticateUserInSecurityContext(new AppUserDetails(user));

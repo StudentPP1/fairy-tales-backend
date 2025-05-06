@@ -29,11 +29,8 @@ public class StoryService {
     private final HelperService helperService;
     private final NotificationService notificationService;
     public Story getStoryById(Long storyId) {
-        return storyRepository.findById(storyId).orElseThrow(() ->
-                ApiException.builder()
-                        .message("Story not found")
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .build());
+        return storyRepository.findById(storyId)
+                .orElseThrow(() -> new ApiException("Story not found", HttpStatus.NOT_FOUND.value()));
     }
     @Cacheable(value = "mostLikedStories")
     public Page<StoryDto> getMostLikedStories(Pageable pageable) {

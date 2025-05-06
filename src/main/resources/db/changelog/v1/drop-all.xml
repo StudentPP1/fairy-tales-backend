@@ -3,18 +3,61 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-<changeSet id="5-drop-foreign-keys" author="StudentPP1" runAlways="true">
-    <dropForeignKeyConstraint baseTableName="user_read_stories" constraintName="fk_user_read_user"/>
-    <dropForeignKeyConstraint baseTableName="user_liked_stories" constraintName="fk_user_liked_user"/>
-</changeSet>
-<changeSet id="6-drop-user-read-stories" author="StudentPP1" runAlways="true">
-<dropTable tableName="user_read_stories"/>
-</changeSet>
+    <changeSet id="drop-foreign-key-1" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_user_read_user"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="user_read_stories" constraintName="fk_user_read_user"/>
+    </changeSet>
 
-<changeSet id="7-drop-user-liked-stories" author="StudentPP1" runAlways="true">
-<dropTable tableName="user_liked_stories"/>
-</changeSet>
-<changeSet id="8-drop-app-user" author="StudentPP1" runAlways="true">
-<dropTable tableName="app_user"/>
-</changeSet>
+    <changeSet id="drop-foreign-key-2" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_user_liked_user"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="user_liked_stories" constraintName="fk_user_liked_user"/>
+    </changeSet>
+
+    <changeSet id="drop-foreign-key-3" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyName="fk_user_connected_account_user"/>
+        </preConditions>
+        <dropForeignKeyConstraint baseTableName="user_connected_account"
+                                  constraintName="fk_user_connected_account_user"/>
+    </changeSet>
+
+    <changeSet id="drop-user-connected-account" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+                <tableExists tableName="user_connected_account"/>
+        </preConditions>
+        <dropTable tableName="user_connected_account"/>
+    </changeSet>
+
+    <changeSet id="drop-user-read-stories" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user_read_stories"/>
+        </preConditions>
+        <dropTable tableName="user_read_stories"/>
+    </changeSet>
+
+    <changeSet id="drop-user-liked-stories" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user_liked_stories"/>
+        </preConditions>
+        <dropTable tableName="user_liked_stories"/>
+    </changeSet>
+
+    <changeSet id="drop-app-user" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="app_user"/>
+        </preConditions>
+        <dropTable tableName="app_user"/>
+    </changeSet>
+
+    <changeSet id="drop-story" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="story"/>
+        </preConditions>
+        <dropTable tableName="story"/>
+    </changeSet>
+
 </databaseChangeLog>

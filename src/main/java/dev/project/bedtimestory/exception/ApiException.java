@@ -5,7 +5,6 @@ import lombok.*;
 import java.util.Map;
 
 @Getter
-@Builder
 public class ApiException extends RuntimeException {
     private String message;
     private int status = 401;
