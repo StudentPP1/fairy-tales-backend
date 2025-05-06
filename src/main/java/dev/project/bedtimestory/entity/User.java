@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "app_user")
-public class User extends BaseEntity implements AppUser {
+public class User extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
@@ -33,6 +33,8 @@ public class User extends BaseEntity implements AppUser {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
+    private boolean isSubscribed;
+
     @OneToMany(mappedBy = "user")
     private List<UserConnectedAccount> connectedAccounts = new ArrayList<>();
 
@@ -42,7 +44,7 @@ public class User extends BaseEntity implements AppUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "story_id")
     )
-    Set<Story> readStories = new HashSet<>();
+    List<Story> readStories = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -50,20 +52,27 @@ public class User extends BaseEntity implements AppUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "story_id")
     )
-    Set<Story> likedStories = new HashSet<>();
+    List<Story> likedStories = new ArrayList<>();
 
     public User (OAuth2User oAuth2User) {
         this.email = oAuth2User.getAttribute("email");
         this.name = oAuth2User.getAttribute("name");
         this.role = Role.USER;
     }
+    public void addLikedStory(Story story) {
+        likedStories.add(story);
+    }
+    public void addReadStory(Story story) {
+        readStories.add(story);
+    }
+    public void removeLikedStory(Story story) {
+        likedStories.remove(story);
+    }
+    public void removeReadStory(Story story) {
+        readStories.remove(story);
+    }
     public void addConnectedAccount(UserConnectedAccount connectedAccount) {
         connectedAccounts.add(connectedAccount);
         connectedAccount.setUser(this);
-    }
-
-    @Override
-    public String getUsername() {
-        return getEmail();
     }
 }

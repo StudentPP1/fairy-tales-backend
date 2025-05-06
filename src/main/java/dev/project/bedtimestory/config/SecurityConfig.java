@@ -1,7 +1,7 @@
 package dev.project.bedtimestory.config;
 
 import dev.project.bedtimestory.auth.oauth2.OAuth2LoginSuccessHandler;
-import dev.project.bedtimestory.auth.service.UserDetailsServiceImpl;
+import dev.project.bedtimestory.security.UserDetailsServiceImpl;
 import dev.project.bedtimestory.jwt.filters.AccessTokenFilter;
 import dev.project.bedtimestory.jwt.filters.RefreshTokenFilter;
 import dev.project.bedtimestory.utils.ApplicationProperties;

@@ -1,9 +1,8 @@
 package dev.project.bedtimestory.jwt.filters;
 
 import dev.project.bedtimestory.auth.service.AuthService;
-import dev.project.bedtimestory.auth.service.UserDetailsServiceImpl;
+import dev.project.bedtimestory.security.UserDetailsServiceImpl;
 import dev.project.bedtimestory.jwt.service.JwtService;
-import dev.project.bedtimestory.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

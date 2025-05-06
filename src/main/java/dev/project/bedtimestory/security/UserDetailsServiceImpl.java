@@ -1,4 +1,4 @@
-package dev.project.bedtimestory.auth.service;
+package dev.project.bedtimestory.security;
 
 import dev.project.bedtimestory.security.AppUserDetails;
 import dev.project.bedtimestory.service.UserService;
