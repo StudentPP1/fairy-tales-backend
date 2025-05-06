@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor

@@ -5,7 +5,6 @@ import dev.project.bedtimestory.utils.ApplicationProperties;
 import dev.project.bedtimestory.exception.ApiException;
 import dev.project.bedtimestory.jwt.service.JwtService;
 import dev.project.bedtimestory.utils.CookieUtils;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,7 @@ public class RefreshTokenFilter extends TokenFilter {
         this.applicationProperties = applicationProperties;
     }
     @Override
-    protected String getToken(@NonNull HttpServletRequest request) throws ServletException {
+    protected String getToken(@NonNull HttpServletRequest request) {
         log.info("RefreshTokenFilter: invoke");
         Optional<String> refreshTokenCookie = CookieUtils.getCookie(
                 request,

@@ -3,7 +3,6 @@ package dev.project.bedtimestory.jwt.filters;
 import dev.project.bedtimestory.security.UserDetailsServiceImpl;
 import dev.project.bedtimestory.exception.ApiException;
 import dev.project.bedtimestory.jwt.service.JwtService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ public class AccessTokenFilter extends TokenFilter {
         super(jwtService, userService);
     }
     @Override
-    protected String getToken(@NonNull HttpServletRequest request) throws ServletException {
+    protected String getToken(@NonNull HttpServletRequest request) {
         log.info("AccessTokenFilter: invoke");
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith(JWT_TOKEN_HEADER)) {

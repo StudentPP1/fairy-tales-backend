@@ -1,6 +1,5 @@
 package dev.project.bedtimestory.security;
 
-import dev.project.bedtimestory.security.AppUserDetails;
 import dev.project.bedtimestory.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
