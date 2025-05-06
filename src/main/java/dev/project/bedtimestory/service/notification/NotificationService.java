@@ -17,7 +17,7 @@ public class NotificationService {
     private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
     private final TemplateEngine templateEngine;
-    @Async("asyncTaskExecutor")
+    @Async
     public void sendNotification(String storyTitle, String storyDescription) {
         var emails = userRepository.getSubscribedEmails();
         emails.forEach(email -> {

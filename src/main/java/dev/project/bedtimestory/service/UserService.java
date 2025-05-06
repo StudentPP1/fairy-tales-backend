@@ -2,10 +2,8 @@ package dev.project.bedtimestory.service;
 
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.dto.UserDto;
-import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.exception.ApiException;
-import dev.project.bedtimestory.repository.StoryRepository;
 import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;

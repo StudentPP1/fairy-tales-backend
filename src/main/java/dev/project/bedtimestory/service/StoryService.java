@@ -15,12 +15,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,26 +35,22 @@ public class StoryService {
                         .status(HttpStatus.NOT_FOUND.value())
                         .build());
     }
-    @Async("asyncTaskExecutor")
     @Cacheable(value = "mostLikedStories")
-    public CompletableFuture<Page<StoryDto>> getMostLikedStories(Pageable pageable) {
-        return CompletableFuture.supplyAsync(() -> storyRepository.findMostLikedStories(pageable));
+    public Page<StoryDto> getMostLikedStories(Pageable pageable) {
+        return storyRepository.findMostLikedStories(pageable);
     }
-    @Async("asyncTaskExecutor")
     @Cacheable(value = "notReadStories", key = "#userId")
-    public CompletableFuture<Page<StoryDto>> getNotReadStories(Pageable pageable, Long userId) {
-        return CompletableFuture.supplyAsync(() -> storyRepository.findNotReadStories(userId, pageable));
+    public Page<StoryDto> getNotReadStories(Pageable pageable, Long userId) {
+        return storyRepository.findNotReadStories(userId, pageable);
     }
-    @Async("asyncTaskExecutor")
-    public CompletableFuture<Page<StoryDto>> getStories(Pageable pageable) {
-        return CompletableFuture.supplyAsync(() -> storyRepository.findStories(pageable));
+    public Page<StoryDto> getStories(Pageable pageable) {
+        return storyRepository.findStories(pageable);
     }
     @Cacheable(value = "searchStories", key = "#query")
     public Page<StoryDto> searchStories(String query, Pageable pageable) {
         return storyRepository.searchStories(query, pageable);
     }
 
-    // ! with role = ADMIN
     @Transactional
     public void updateStory(UpdateStoryRequest request) {
         Story story = getStoryById(request.getId());

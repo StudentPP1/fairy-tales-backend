@@ -6,6 +6,7 @@ import dev.project.bedtimestory.request.UserRegisterRequest;
 import dev.project.bedtimestory.response.AuthenticationResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class AuthController {
     private final AuthService service;
     @PostMapping("/auth/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody UserRegisterRequest userRegisterRequest,
+            @Valid @RequestBody UserRegisterRequest userRegisterRequest,
             @NonNull HttpServletResponse response) {
         return service.register(userRegisterRequest, response);
     }
@@ -26,7 +27,7 @@ public class AuthController {
     @PostMapping("/auth/login")
     public  ResponseEntity<AuthenticationResponse> login(
             @NonNull HttpServletResponse response,
-            @RequestBody UserLoginRequest userLoginRequest) {
+            @Valid @RequestBody UserLoginRequest userLoginRequest) {
         return service.login(userLoginRequest, response);
     }
 
