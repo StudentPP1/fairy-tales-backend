@@ -4,6 +4,7 @@ import dev.project.bedtimestory.auth.service.UserDetailsServiceImpl;
 import dev.project.bedtimestory.config.ApplicationProperties;
 import dev.project.bedtimestory.exception.ApiException;
 import dev.project.bedtimestory.jwt.service.JwtService;
+import dev.project.bedtimestory.service.UserService;
 import dev.project.bedtimestory.utils.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class RefreshTokenFilter extends TokenFilter {
     private final ApplicationProperties applicationProperties;
 
-    public RefreshTokenFilter(JwtService jwtService, UserDetailsServiceImpl userService, ApplicationProperties applicationProperties) {
+    public RefreshTokenFilter(JwtService jwtService, UserService userService, ApplicationProperties applicationProperties) {
         super(jwtService, userService);
         this.applicationProperties = applicationProperties;
     }

@@ -3,6 +3,7 @@ package dev.project.bedtimestory.jwt.filters;
 import dev.project.bedtimestory.auth.service.UserDetailsServiceImpl;
 import dev.project.bedtimestory.exception.ApiException;
 import dev.project.bedtimestory.jwt.service.JwtService;
+import dev.project.bedtimestory.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
@@ -16,7 +17,7 @@ public class AccessTokenFilter extends TokenFilter {
     private final static int JWT_TOKEN_SUBSTRING = 7;
     private final static String JWT_TOKEN_HEADER = "Bearer ";
 
-    public AccessTokenFilter(JwtService jwtService, UserDetailsServiceImpl userService) {
+    public AccessTokenFilter(JwtService jwtService, UserService userService) {
         super(jwtService, userService);
     }
     @Override
