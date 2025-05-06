@@ -16,6 +16,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +41,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         log.info("AuthService: end authentication");
     }
-    public AuthenticationResponse register(
+    public ResponseEntity<AuthenticationResponse> register(
             UserRegisterRequest registerRequest,
             @NonNull HttpServletResponse response
     ) {
@@ -52,7 +53,7 @@ public class AuthService {
         user = userService.save(user);
         return saveUserInContextAndSendTokens(user, response);
     }
-    public AuthenticationResponse login(
+    public ResponseEntity<AuthenticationResponse> login(
             UserLoginRequest loginRequest,
             @NonNull HttpServletResponse response
     ) {
@@ -63,7 +64,7 @@ public class AuthService {
         }
         return saveUserInContextAndSendTokens(user, response);
     }
-    public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("AuthService: refresh tokens");
         String refreshToken = CookieUtils.getCookie(
                 request,
@@ -74,12 +75,12 @@ public class AuthService {
         AppUserDetails user = userService.getUserFromContext();
         return jwtService.validateAndSendTokens(user, refreshToken, response);
     }
-    private AuthenticationResponse saveUserInContextAndSendTokens(User user, @NonNull HttpServletResponse response) {
+    private ResponseEntity<AuthenticationResponse> saveUserInContextAndSendTokens(User user, @NonNull HttpServletResponse response) {
         authenticateUserInSecurityContext(new AppUserDetails(user));
         var jwtToken = jwtService.generateAccessToken(user);
         jwtService.setRefreshTokenToCookie(user, response);
-        return AuthenticationResponse.builder()
+        return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(jwtToken)
-                .build();
+                .build());
     }
 }

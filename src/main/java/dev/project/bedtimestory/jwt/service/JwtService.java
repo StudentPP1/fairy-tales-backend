@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -41,14 +42,14 @@ public class JwtService {
         log.info("jwtService: set new refresh token to cookie");
         response.addCookie(refreshTokenCookie);
     }
-    public AuthenticationResponse validateAndSendTokens(AppUser user, String token, HttpServletResponse response) throws AccessDeniedException {
+    public ResponseEntity<AuthenticationResponse> validateAndSendTokens(AppUser user, String token, HttpServletResponse response) throws AccessDeniedException {
         this.isTokenValid(token);
         String newAccessToken = this.generateAccessToken(user);
         this.setRefreshTokenToCookie(user, response);
         log.info("jwtService: send new tokens");
-        return AuthenticationResponse.builder()
+        return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(newAccessToken)
-                .build();
+                .build());
     }
     public Long extractUserId(String token) {
         return Long.valueOf(extractClaim(token, Claims::getSubject));
