@@ -9,6 +9,7 @@ import dev.project.bedtimestory.response.AuthenticationResponse;
 import dev.project.bedtimestory.security.AppUserDetails;
 import dev.project.bedtimestory.service.UserService;
 import dev.project.bedtimestory.utils.ApplicationProperties;
+import dev.project.bedtimestory.utils.AuthUtils;
 import dev.project.bedtimestory.utils.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -72,8 +73,7 @@ public class AuthService {
         ).orElseThrow(
                 () -> new ApiException("refreshToken isn't present")
         );
-        AppUserDetails user = userService.getUserFromContext();
-        return jwtService.validateAndSendTokens(user.user(), refreshToken, response);
+        return jwtService.validateAndSendTokens(AuthUtils.getAuthenticatedUser().getUser(), refreshToken, response);
     }
     private ResponseEntity<AuthenticationResponse> saveUserInContextAndSendTokens(User user, @NonNull HttpServletResponse response) {
         authenticateUserInSecurityContext(new AppUserDetails(user));
