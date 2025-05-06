@@ -1,6 +1,6 @@
 package dev.project.bedtimestory.jwt.service;
 
-import dev.project.bedtimestory.config.ApplicationProperties;
+import dev.project.bedtimestory.utils.ApplicationProperties;
 import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.response.AuthenticationResponse;
 import io.jsonwebtoken.Claims;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;

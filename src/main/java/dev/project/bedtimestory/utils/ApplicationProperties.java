@@ -1,4 +1,4 @@
-package dev.project.bedtimestory.config;
+package dev.project.bedtimestory.utils;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,4 +18,5 @@ public class ApplicationProperties {
     private int jwtRefreshTokenExpiration;
     private String jwtAccessTokenName;
     private String jwtRefreshTokenName;
+    private String csrfAttribute;
 }

@@ -1,15 +1,13 @@
 package dev.project.bedtimestory.auth.oauth2;
 
 import dev.project.bedtimestory.auth.service.AuthService;
-import dev.project.bedtimestory.config.ApplicationProperties;
+import dev.project.bedtimestory.utils.ApplicationProperties;
 import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.entity.UserConnectedAccount;
 import dev.project.bedtimestory.jwt.service.JwtService;
 import dev.project.bedtimestory.repository.UserConnectedAccountRepository;
-import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.security.AppUserDetails;
 import dev.project.bedtimestory.service.UserService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

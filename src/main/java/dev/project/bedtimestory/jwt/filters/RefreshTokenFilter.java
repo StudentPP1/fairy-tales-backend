@@ -1,7 +1,6 @@
 package dev.project.bedtimestory.jwt.filters;
 
-import dev.project.bedtimestory.auth.service.UserDetailsServiceImpl;
-import dev.project.bedtimestory.config.ApplicationProperties;
+import dev.project.bedtimestory.utils.ApplicationProperties;
 import dev.project.bedtimestory.exception.ApiException;
 import dev.project.bedtimestory.jwt.service.JwtService;
 import dev.project.bedtimestory.service.UserService;
