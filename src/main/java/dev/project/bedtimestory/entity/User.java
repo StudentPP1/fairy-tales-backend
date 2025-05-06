@@ -61,4 +61,9 @@ public class User extends BaseEntity implements AppUser {
         connectedAccounts.add(connectedAccount);
         connectedAccount.setUser(this);
     }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
 }

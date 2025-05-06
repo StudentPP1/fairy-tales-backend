@@ -17,7 +17,7 @@ public class AccessTokenFilter extends TokenFilter {
     private final static int JWT_TOKEN_SUBSTRING = 7;
     private final static String JWT_TOKEN_HEADER = "Bearer ";
 
-    public AccessTokenFilter(JwtService jwtService, UserService userService) {
+    public AccessTokenFilter(JwtService jwtService, UserDetailsServiceImpl userService) {
         super(jwtService, userService);
     }
     @Override

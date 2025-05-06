@@ -1,6 +1,7 @@
 package dev.project.bedtimestory.request;
 
 import dev.project.bedtimestory.validation.Unique;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -8,9 +9,11 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class UserRegisterRequest {
+    @NotBlank
     @NotNull
     private String name;
 
+    @NotBlank
     @NotNull
     @Length(min = 8)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",
@@ -18,6 +21,7 @@ public class UserRegisterRequest {
     private String password;
 
     // check if username is already exists in database
+    @NotBlank
     @NotNull
     @Unique(
             columnName = "email",

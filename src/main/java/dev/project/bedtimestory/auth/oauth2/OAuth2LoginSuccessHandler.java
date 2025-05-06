@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,10 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         String provider = authenticationToken.getAuthorizedClientRegistrationId();
         String providerId = authentication.getName();
         String email = authenticationToken.getPrincipal().getAttribute("email");
+
+        if (email == null || email.isBlank()) {
+            throw new OAuth2AuthenticationException("Email is required to use the application");
+        }
 
         // check if you have user based on this account
         Optional<UserConnectedAccount> connectedAccount = userConnectedAccountRepository.findByProviderAndProviderId(

@@ -51,8 +51,8 @@ public class JwtService {
                 .accessToken(newAccessToken)
                 .build());
     }
-    public Long extractUserId(String token) {
-        return Long.valueOf(extractClaim(token, Claims::getSubject));
+    public String extractSubject(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
     public boolean isTokenValid(String token) throws AccessDeniedException {
         if (isTokenExpired(token)) throw new AccessDeniedException("Token expired");
@@ -82,8 +82,7 @@ public class JwtService {
         return Jwts.builder()
                 .expiration(new Date(System.currentTimeMillis() + expiration * TO_MILLIS))
                 .issuedAt(new Date())
-                // ! to avoid empty email like from GitHub oauth2
-                .subject(String.valueOf(user.getId()))
+                .subject(user.getUsername())
                 .signWith(getSignInKey())
                 .compact();
     }

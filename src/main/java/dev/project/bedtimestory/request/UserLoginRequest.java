@@ -1,6 +1,7 @@
 package dev.project.bedtimestory.request;
 
 import dev.project.bedtimestory.validation.Unique;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -8,12 +9,14 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class UserLoginRequest {
+    @NotBlank
     @NotNull
     @Length(min = 8)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",
             message = "must contain at least one uppercase letter, one lowercase letter, and one digit.")
     private String password;
 
+    @NotBlank
     @NotNull
     @Unique(
             columnName = "email",
