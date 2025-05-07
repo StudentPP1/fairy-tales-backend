@@ -32,7 +32,7 @@ public interface StoryRepository extends JpaRepository<Story, Long>, SearchStory
     WHERE s.id NOT IN (
         SELECT rs.id FROM User u JOIN u.readStories rs WHERE u.id = :userId
     )
-""")
+    """)
     Page<StoryDto> findNotReadStories(@Param("userId") Long userId, Pageable pageable);
 
     @Query("""
@@ -50,12 +50,12 @@ public interface StoryRepository extends JpaRepository<Story, Long>, SearchStory
         s.imgUrl,
         s.text,
         s.likedCount,
-        CASE WHEN (s IN (
-            SELECT liked FROM User u JOIN u.likedStories liked WHERE u.id = :userId
-        )) THEN true ELSE false END,
-        CASE WHEN (s IN (
-            SELECT read FROM User u JOIN u.readStories read WHERE u.id = :userId
-        )) THEN true ELSE false END
+        EXISTS (
+            SELECT 1 FROM User u JOIN u.likedStories ls WHERE u.id = :userId AND ls.id = s.id
+        ),
+        EXISTS (
+            SELECT 1 FROM User u JOIN u.readStories rs WHERE u.id = :userId AND rs.id = s.id
+        )
     )
     FROM Story s WHERE s.id = :storyId
     """)

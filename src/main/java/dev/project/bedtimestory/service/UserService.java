@@ -2,8 +2,10 @@ package dev.project.bedtimestory.service;
 
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.dto.UserDto;
+import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.exception.ApiException;
+import dev.project.bedtimestory.repository.StoryRepository;
 import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final StoryRepository storyRepository;
     private final HelperService helperService;
     public User getUserByEmail(String email) {
         return userRepository
@@ -45,8 +48,11 @@ public class UserService {
     @Transactional
     public void addLikedStory(Long userId, Long storyId) {
         User user = helperService.getUserById(userId);
-        user.addLikedStory(helperService.getStoryById(storyId));
+        Story story = helperService.getStoryById(storyId);
+        user.addLikedStory(story);
+        story.setLikedCount(story.getLikedCount() + 1);
         userRepository.save(user);
+        storyRepository.save(story);
     }
     @Transactional
     public void addReadStory(Long userId, Long storyId) {
@@ -57,8 +63,11 @@ public class UserService {
     @Transactional
     public void removeLikedStory(Long userId, Long storyId) {
         User user = helperService.getUserById(userId);
-        user.removeLikedStory(helperService.getStoryById(storyId));
+        Story story = helperService.getStoryById(storyId);
+        user.removeLikedStory(story);
+        story.setLikedCount(story.getLikedCount() - 1);
         userRepository.save(user);
+        storyRepository.save(story);
     }
     @Transactional
     public void removeReadStory(Long userId, Long storyId) {

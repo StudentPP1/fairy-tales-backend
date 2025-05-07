@@ -21,4 +21,6 @@ public class Story extends BaseEntity {
     @Column(nullable = false)
     private String text;
     private int likedCount = 0;
+
+    // TODO: liked users & read users => mappedBy on user side
 }
