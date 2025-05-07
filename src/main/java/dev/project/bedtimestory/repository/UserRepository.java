@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
     @Query("""
     select new dev.project.bedtimestory.dto.UserDto(
         u.name,
@@ -24,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     from User u where u.id = :userId
     """)
     Optional<UserDto> getUserDtoById(@Param("userId") Long userId);
+
     @Query("""
     select new dev.project.bedtimestory.dto.StoryDto(
         s.id,
@@ -47,6 +49,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     from User u join u.likedStories s where u.id = :userId
     """)
     List<StoryDto> findLikedStoryByUserId(@Param("userId") Long userId);
+
     @Query("select u.email from User u where u.isSubscribed = true")
     List<String> getSubscribedEmails();
 }

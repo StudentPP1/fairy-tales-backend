@@ -42,7 +42,7 @@ public class User extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "story_id")
     )
-    List<Story> readStories = new ArrayList<>();
+    private List<Story> readStories = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -50,9 +50,9 @@ public class User extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "story_id")
     )
-    List<Story> likedStories = new ArrayList<>();
+    private List<Story> likedStories = new ArrayList<>();
 
-    public User (OAuth2User oAuth2User) {
+    public User(OAuth2User oAuth2User) {
         this.email = oAuth2User.getAttribute("email");
         this.name = oAuth2User.getAttribute("name");
         this.role = Role.USER;
