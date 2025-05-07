@@ -1,5 +1,6 @@
 package dev.project.bedtimestory.service;
 
+import dev.project.bedtimestory.dto.StoryDetailsDto;
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.entity.User;
@@ -30,6 +31,10 @@ public class StoryService {
     private final NotificationService notificationService;
     public Story getStoryById(Long storyId) {
         return storyRepository.findById(storyId)
+                .orElseThrow(() -> new ApiException("Story not found", HttpStatus.NOT_FOUND.value()));
+    }
+    public StoryDetailsDto getStoryDetailsById(Long storyId, Long userId) {
+        return storyRepository.getStoryDetailsDto(storyId, userId)
                 .orElseThrow(() -> new ApiException("Story not found", HttpStatus.NOT_FOUND.value()));
     }
     @Cacheable(value = "mostLikedStories")

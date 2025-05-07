@@ -1,5 +1,6 @@
 package dev.project.bedtimestory.controller;
 
+import dev.project.bedtimestory.dto.StoryDetailsDto;
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.request.CreateStoryRequest;
@@ -25,8 +26,13 @@ public class StoryController {
     private final StoryService storyService;
 
     @GetMapping
-    public ResponseEntity<Story> getStory(@RequestParam("storyId") Long storyId) {
-        return ResponseEntity.ok(storyService.getStoryById(storyId));
+    public ResponseEntity<StoryDetailsDto> getStory(
+            @RequestParam("storyId") Long storyId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) throws ServerException {
+        return ResponseEntity.ok(storyService.getStoryDetailsById(
+                storyId,
+                AuthUtils.getCurrentUserId(userDetails)));
     }
 
     @GetMapping("/topStories")

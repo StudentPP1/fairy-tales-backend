@@ -1,5 +1,6 @@
 package dev.project.bedtimestory.repository;
 
+import dev.project.bedtimestory.dto.StoryDetailsDto;
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Story;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 
 @Repository
@@ -39,4 +42,22 @@ public interface StoryRepository extends JpaRepository<Story, Long>, SearchStory
     FROM Story s
     """)
     Page<StoryDto> findStories(Pageable pageable);
+
+    @Query("""
+    SELECT new dev.project.bedtimestory.dto.StoryDetailsDto(
+        s.title,
+        s.description,
+        s.imgUrl,
+        s.text,
+        s.likedCount,
+        CASE WHEN (s IN (
+            SELECT liked FROM User u JOIN u.likedStories liked WHERE u.id = :userId
+        )) THEN true ELSE false END,
+        CASE WHEN (s IN (
+            SELECT read FROM User u JOIN u.readStories read WHERE u.id = :userId
+        )) THEN true ELSE false END
+    )
+    FROM Story s WHERE s.id = :storyId
+    """)
+    Optional<StoryDetailsDto> getStoryDetailsDto(Long storyId, Long userId);
 }
