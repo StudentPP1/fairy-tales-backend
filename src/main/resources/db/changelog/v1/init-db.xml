@@ -50,7 +50,9 @@
             <column name="title" type="TEXT">
                 <constraints nullable="false"/>
             </column>
-            <column name="img_url" type="TEXT"/>
+            <column name="img_url" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
             <column name="text" type="TEXT">
                 <constraints nullable="false"/>
             </column>
@@ -125,7 +127,6 @@
             <column name="created_at" type="timestamp"/>
             <column name="updated_at" type="timestamp"/>
         </createTable>
-
         <addForeignKeyConstraint
                 baseTableName="user_connected_account" baseColumnNames="user_id"
                 referencedTableName="app_user" referencedColumnNames="id"

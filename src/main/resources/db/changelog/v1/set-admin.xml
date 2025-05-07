@@ -8,7 +8,6 @@
             <tableIsEmpty tableName="app_user"/>
         </preConditions>
         <insert tableName="app_user">
-            <column name="id" value="1"/>
             <column name="name" value="admin"/>
             <column name="email" value="admin@gmail.com"/>
             <column name="password" value="$2a$12$CIOQHHgkitB14MtpFL.8zeHENC8NGtwnQLeiPwZcRx2vfIdufRK4O"/>

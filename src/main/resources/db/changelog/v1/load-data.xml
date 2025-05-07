@@ -8,7 +8,6 @@
             <tableIsEmpty tableName="story"/>
         </preConditions>
         <insert tableName="story">
-            <column name="id" value="1"/>
             <column name="title" value="Ivasyk-Telesyk"/>
             <column name="description" value="An old man and old woman have no children. Because of this, the old woman asks the old man to carve a log out of a tree so that she can have a son. She places the log in a cradle. The next day, the log turns into a real boy. Since it was carved, it is called Ivasyk-Telesyk. "/>
             <column name="text" value="An old man and old woman have no children. Because of this, the old woman asks the old man to carve a log out of a tree so that she can have a son. She places the log in a cradle. The next day, the log turns into a real boy. Since it was carved, it is called Ivasyk-Telesyk.
@@ -30,7 +29,6 @@ Once returned home, standing outside, the boy hears his mother counting pies, an
             <column name="updated_at" valueDate="2025-01-01T12:00:00"/>
         </insert>
         <insert tableName="story">
-            <column name="id" value="2"/>
             <column name="title" value="Little Red Riding Hood"/>
             <column name="description" value="Little Red Riding Hood
 Brave the dark woods with Little Red Riding Hood as she encounters a cunning wolf in this timeless tale of ..."/>
@@ -89,7 +87,6 @@ The End!"/>
             <column name="updated_at" valueDate="2025-01-02T14:30:00"/>
         </insert>
         <insert tableName="story">
-            <column name="id" value="3"/>
             <column name="title" value="The Ugly Duckling"/>
             <column name="description" value="Embrace the transformative journey of the Ugly Duckling as it discovers its true beauty ..."/>
             <column name="text" value="Once upon a time, in a quiet pond with tall plants and pretty flowers around it, a mother duck waited excitedly for her eggs to hatch. Finally, the day came when one egg cracked open, and out came a tiny, grayish duckling. Even though the mother duck loved all her babies, she noticed that this little one looked different from the rest.

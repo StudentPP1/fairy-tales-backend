@@ -30,10 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(properties = {
-        "spring.jpa.hibernate.ddl-auto=create-drop",
-        "spring.liquibase.enabled=false"
+        "spring.jpa.hibernate.ddl-auto=none",
+        "spring.liquibase.enabled=true"
 })
 class StoryRepositoryTest {
+    private final static int MIGRATION_ADDED_STORY_COUNT = 3;
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
             .withDatabaseName("testdb")
@@ -62,7 +63,7 @@ class StoryRepositoryTest {
         Story s2 = storyRepository.save(new Story("T2", "D2", "img", "text", 20));
 
         Page<StoryDto> result = storyRepository.findMostLikedStories(PageRequest.of(0, 10));
-        assertEquals(2, result.getTotalElements());
+        assertEquals(MIGRATION_ADDED_STORY_COUNT + 2, result.getTotalElements());
         assertEquals("T2", result.getContent().get(0).getTitle());
     }
 
@@ -76,8 +77,8 @@ class StoryRepositoryTest {
         userRepository.save(user);
 
         Page<StoryDto> result = storyRepository.findNotReadStories(user.getId(), PageRequest.of(0, 10));
-        assertEquals(1, result.getTotalElements());
-        assertEquals("S2", result.getContent().get(0).getTitle());
+        assertEquals(MIGRATION_ADDED_STORY_COUNT + 1, result.getTotalElements());
+        assertEquals("S2", result.getContent().get(MIGRATION_ADDED_STORY_COUNT).getTitle());
     }
 
     @Test
@@ -88,7 +89,7 @@ class StoryRepositoryTest {
 
         Page<StoryDto> result = storyRepository.findStories(PageRequest.of(0, 10));
 
-        assertEquals(3, result.getTotalElements());
+        assertEquals(MIGRATION_ADDED_STORY_COUNT + 3, result.getTotalElements());
         List<String> titles = result.getContent().stream().map(StoryDto::getTitle).toList();
         assertTrue(titles.containsAll(List.of("Story 1", "Story 2", "Story 3")));
     }
