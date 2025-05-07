@@ -2,7 +2,6 @@ package dev.project.bedtimestory.controller;
 
 import dev.project.bedtimestory.dto.StoryDetailsDto;
 import dev.project.bedtimestory.dto.StoryDto;
-import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
 import dev.project.bedtimestory.service.StoryService;
