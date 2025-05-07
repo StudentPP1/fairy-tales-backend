@@ -59,7 +59,7 @@ public class StoryController {
     public void updateStory(@Valid @RequestBody UpdateStoryRequest request) {
         storyService.updateStory(request);
     }
-    @DeleteMapping("/update")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStory(
             @RequestParam("storyId") Long storyId,
