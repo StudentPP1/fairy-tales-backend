@@ -31,8 +31,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_db:5432/stories
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - ./app:/app
 volumes:
   postgres_data: {}
   redis_data: {}
