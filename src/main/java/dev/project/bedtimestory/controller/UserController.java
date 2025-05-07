@@ -42,13 +42,13 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public void updateUser(
+    public ResponseEntity<UserDto> updateUser(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody UpdateUserRequest request) throws ServerException {
-        userService.updateUser(
+        return ResponseEntity.ok(userService.updateUser(
                 AuthUtils.getCurrentUserId(userDetails),
                 request
-        );
+        ));
     }
 
     @PostMapping("/addLikedStory")

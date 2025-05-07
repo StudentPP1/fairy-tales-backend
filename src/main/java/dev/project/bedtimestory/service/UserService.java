@@ -40,10 +40,17 @@ public class UserService {
         return userRepository.findLikedStoryByUserId(userId);
     }
     @Transactional
-    public void updateUser(Long userId, UpdateUserRequest request) {
+    public UserDto updateUser(Long userId, UpdateUserRequest request) {
         User user = helperService.getUserById(userId);
         user.setName(request.getName());
         user.setImg(request.getImg());
+        user = userRepository.save(user);
+        return UserDto.builder()
+                .name(user.getName())
+                .img(user.getImg())
+                .role(user.getRole())
+                .email(user.getEmail())
+                .build();
     }
     @Transactional
     public void addLikedStory(Long userId, Long storyId) {
