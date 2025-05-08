@@ -71,7 +71,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/csrf-token").permitAll()
                         .requestMatchers("/api/logout").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/story/topStories").permitAll()
                         .requestMatchers("/api/story/getStories").permitAll()
                         .requestMatchers("/api/story/search").permitAll()
@@ -80,10 +80,11 @@ public class SecurityConfig {
                 .oauth2Login(auth -> {
                         auth.loginPage(applicationProperties.getFrontUrl());
                         auth.successHandler(oAuth2LoginSuccessHandler);
-                        auth.redirectionEndpoint(endPoint ->
-                                endPoint.baseUri("/oauth2/callback/*"));
-                        auth.authorizationEndpoint(endPoint ->
-                                endPoint.baseUri("/oauth2/authorize/*"));
+                        auth.redirectionEndpoint(redirectionEndpoint ->
+                            redirectionEndpoint.baseUri("/oauth2/callback/*"));
+                        auth.authorizationEndpoint(authorizationEndpoint ->
+                            authorizationEndpoint.baseUri("/oauth2/authorize")
+                        );
                 })
                 .addFilterAfter(accessTokenFilter, OAuth2LoginAuthenticationFilter.class)
                 .addFilterAfter(refreshTokenFilter, AccessTokenFilter.class)
