@@ -1,0 +1,21 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="6-add-admin-user" author="StudentPP1" runAlways="true">
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="app_user"/>
+        </preConditions>
+        <insert tableName="app_user">
+            <column name="name" value="admin"/>
+            <column name="email" value="admin@gmail.com"/>
+            <column name="password" value="$2a$12$CIOQHHgkitB14MtpFL.8zeHENC8NGtwnQLeiPwZcRx2vfIdufRK4O"/>
+            <column name="role" value="ADMIN"/>
+            <column name="img" value=""/>
+            <column name="is_subscribed" value="false"/>
+            <column name="created_at" valueDate="2025-01-01 12:00:00"/>
+            <column name="updated_at" valueDate="2025-01-01 12:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

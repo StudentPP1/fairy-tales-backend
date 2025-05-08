@@ -2,22 +2,28 @@ version: "3"
 
 services:
   db:
-    container_name: postgres_db
     image: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=stories
+    volumes:
+      - ./infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
   redis:
     container_name: cache_redis
     image: redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+
   app:
     container_name: backend_app
-    build: ./
+    build: .
     image: app
     depends_on:
       - db
@@ -25,6 +31,25 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_db:5432/stories
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/bedtime_stories
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4:7
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    depends_on:
+      - app
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  redis_data:
+  pgadmin-data:
