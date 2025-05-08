@@ -59,12 +59,12 @@ public class StoryController {
     
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<StoryDto> createStory(@Valid @RequestBody CreateStoryRequest request) {
+    public ResponseEntity<StoryDto> createStory(@RequestBody @Valid CreateStoryRequest request) {
         return ResponseEntity.ok(storyService.createStory(request));
     }
     @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<StoryDto> updateStory(@Valid @RequestBody UpdateStoryRequest request) {
+    public ResponseEntity<StoryDto> updateStory(@RequestBody @Valid UpdateStoryRequest request) {
         return ResponseEntity.ok(storyService.updateStory(request));
     }
     @DeleteMapping("/delete")

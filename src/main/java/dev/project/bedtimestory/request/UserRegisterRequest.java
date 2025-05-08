@@ -15,7 +15,7 @@ public class UserRegisterRequest {
 
     @NotNull(message = "The password field field should not be null")
     @NotEmpty(message = "The password field should not be empty")
-    @Length(min = 8)
+    @Length(min = 8, message = "The password field should not be grater then 8 symbols")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",
             message = "must contain at least one uppercase letter, one lowercase letter, and one digit.")
     private String password;

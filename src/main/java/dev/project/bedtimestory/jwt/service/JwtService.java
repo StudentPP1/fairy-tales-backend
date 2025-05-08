@@ -1,6 +1,7 @@
 package dev.project.bedtimestory.jwt.service;
 
 import dev.project.bedtimestory.entity.User;
+import dev.project.bedtimestory.exception.ApiException;
 import dev.project.bedtimestory.utils.ApplicationProperties;
 import dev.project.bedtimestory.response.AuthenticationResponse;
 import io.jsonwebtoken.Claims;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.nio.file.AccessDeniedException;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -42,7 +42,7 @@ public class JwtService {
         log.info("jwtService: set new refresh token to cookie");
         response.addCookie(refreshTokenCookie);
     }
-    public ResponseEntity<AuthenticationResponse> validateAndSendTokens(User user, String token, HttpServletResponse response) throws AccessDeniedException {
+    public ResponseEntity<AuthenticationResponse> validateAndSendTokens(User user, String token, HttpServletResponse response) {
         this.isTokenValid(token);
         String newAccessToken = this.generateAccessToken(user);
         this.setRefreshTokenToCookie(user, response);
@@ -54,8 +54,8 @@ public class JwtService {
     public String extractSubject(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    public boolean isTokenValid(String token) throws AccessDeniedException {
-        if (isTokenExpired(token)) throw new AccessDeniedException("Token expired");
+    public boolean isTokenValid(String token) {
+        if (isTokenExpired(token)) throw new ApiException("Token expired", 403);
         return true;
     }
     private boolean isTokenExpired(String token) {

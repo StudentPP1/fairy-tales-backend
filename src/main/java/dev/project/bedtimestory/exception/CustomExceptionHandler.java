@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -37,8 +34,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 String fieldName = fieldError.getField();
                 String errorMessage = fieldError.getDefaultMessage();
                 errors.put(fieldName, errorMessage);
+                logger.info("fieldName: {}; error: {}", fieldName, errorMessage);
             } else {
                 generalErrors.add(error.getDefaultMessage());
+                logger.info("generalErrors: {}", Arrays.toString(generalErrors.toArray()));
             }
         });
         HttpErrorResponse response = HttpErrorResponse.of(

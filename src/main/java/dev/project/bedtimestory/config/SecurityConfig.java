@@ -5,7 +5,6 @@ import dev.project.bedtimestory.security.UserDetailsServiceImpl;
 import dev.project.bedtimestory.jwt.filters.AccessTokenFilter;
 import dev.project.bedtimestory.jwt.filters.RefreshTokenFilter;
 import dev.project.bedtimestory.utils.ApplicationProperties;
-import dev.project.bedtimestory.utils.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
@@ -68,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/csrf-token").permitAll()
                         .requestMatchers("/api/logout").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/story/topStories").permitAll()
                         .requestMatchers("/api/story/getStories").permitAll()
                         .requestMatchers("/api/story/search").permitAll()
@@ -85,13 +83,6 @@ public class SecurityConfig {
                 })
                 .addFilterAfter(accessTokenFilter, OAuth2LoginAuthenticationFilter.class)
                 .addFilterAfter(refreshTokenFilter, AccessTokenFilter.class)
-                .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            CookieUtils.deleteCookies(request, response);
-                            SecurityContextHolder.clearContext();
-                        })
-                )
                 .build();
     }
 }
