@@ -54,13 +54,10 @@ class StoryRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private TestEntityManager em;
-
     @Test
     void findMostLikedStories() {
-        Story s1 = storyRepository.save(new Story("T1", "D1", "img", "text", 10));
-        Story s2 = storyRepository.save(new Story("T2", "D2", "img", "text", 20));
+        storyRepository.save(new Story("T1", "D1", "img", "text", 10));
+        storyRepository.save(new Story("T2", "D2", "img", "text", 20));
 
         Page<StoryDto> result = storyRepository.findMostLikedStories(PageRequest.of(0, 10));
         assertEquals(MIGRATION_ADDED_STORY_COUNT + 2, result.getTotalElements());
@@ -70,7 +67,7 @@ class StoryRepositoryTest {
     @Test
     void findNotReadStories() {
         Story s1 = storyRepository.save(new Story("S1", "Desc", "img", "text", 0));
-        Story s2 = storyRepository.save(new Story("S2", "Desc", "img", "text", 0));
+        storyRepository.save(new Story("S2", "Desc", "img", "text", 0));
         User user = userRepository.save(new User("User", "user@mail.com", null, "pass", Role.USER, false,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         user.getReadStories().add(s1);

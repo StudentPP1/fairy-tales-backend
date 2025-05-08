@@ -1,7 +1,6 @@
 package dev.project.bedtimestory.request;
 
 import dev.project.bedtimestory.validation.Unique;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
