@@ -9,9 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> register(
             @Valid @RequestBody UserRegisterRequest userRegisterRequest,
             @NonNull HttpServletResponse response) {
+        log.info("AuthController: call service to register user");
         return service.register(userRegisterRequest, response);
     }
 
@@ -28,13 +31,15 @@ public class AuthController {
     public  ResponseEntity<AuthenticationResponse> login(
             @NonNull HttpServletResponse response,
             @Valid @RequestBody UserLoginRequest userLoginRequest) {
+        log.info("AuthController: call service to login user");
         return service.login(userLoginRequest, response);
     }
 
-    @GetMapping("/refresh-token")
+    @PostMapping("/refresh-token")
     public ResponseEntity<AuthenticationResponse> refreshToken(
             @NonNull HttpServletResponse response,
             @NonNull HttpServletRequest request) throws Exception {
+        log.info("AuthController: call service to refresh token");
         return service.refreshToken(request, response);
     }
 }

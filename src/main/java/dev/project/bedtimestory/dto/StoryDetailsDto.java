@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StoryDetailsDto {
+    private Long id;
     private String title;
     private String description;
     private String imgUrl;

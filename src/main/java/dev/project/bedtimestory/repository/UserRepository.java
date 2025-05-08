@@ -20,7 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
         u.name,
         u.img,
         u.email,
-        u.role
+        u.role,
+        u.isSubscribed
     )
     from User u where u.id = :userId
     """)

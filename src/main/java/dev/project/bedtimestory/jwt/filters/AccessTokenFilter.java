@@ -30,6 +30,6 @@ public class AccessTokenFilter extends TokenFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.endsWith("/auth/refresh-token");
+        return path.endsWith("/api/refresh-token");
     }
 }

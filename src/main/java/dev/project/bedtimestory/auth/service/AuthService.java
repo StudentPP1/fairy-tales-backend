@@ -60,6 +60,7 @@ public class AuthService {
     ) {
         log.info("AuthService: start login user");
         User user = userService.getUserByEmail(loginRequest.getEmail());
+        log.info("Password: {} === {}", loginRequest.getPassword(), user.getPassword());
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new ApiException("Wrong password", HttpStatus.BAD_REQUEST.value());
         }

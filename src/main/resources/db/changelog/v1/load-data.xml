@@ -123,5 +123,21 @@ From that day on, the little duckling was no longer the “Ugly Duckling.” He 
             <column name="created_at" valueDate="2025-01-03T09:15:00"/>
             <column name="updated_at" valueDate="2025-01-03T09:15:00"/>
         </insert>
+        <insert tableName="story">
+            <column name="title" value="Winnie-the-Pooh"/>
+            <column name="description" value="Winnie-the-Pooh Series The Winnie-the-Pooh series is often read as bedtime stories because it is calming and relaxing. The stories are ..."/>
+            <column name="text" value="
+
+The Winnie-the-Pooh series is often read as bedtime stories because it is calming and relaxing. The stories are set in the Hundred Acre Wood, a peaceful and idyllic setting. The characters are lovable and relatable, and their adventures are always heartwarming and fun.
+
+If you are looking for a bedtime story that will help your child wind down and fall asleep, the Winnie-the-Pooh series is a great choice. The stories are sure to bring a smile to your child’s face and help them drift off to sleep feeling happy and loved.
+
+No matter which episode you choose, the Winnie-the-Pooh series is sure to be a hit with your child. The stories are full of heart and humor, and they will help your child drift off to sleep feeling happy and loved.
+"/>
+            <column name="img_url" value="https://www.readthetale.com/wp-content/uploads/2024/08/winnie-the-pooh-bedtime-stories-ep1-v2.jpg"/>
+            <column name="liked_count" valueNumeric="5"/>
+            <column name="created_at" valueDate="2025-01-01T12:00:00"/>
+            <column name="updated_at" valueDate="2025-01-01T12:00:00"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

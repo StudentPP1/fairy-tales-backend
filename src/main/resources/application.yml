@@ -37,12 +37,9 @@ spring:
     port: 587
     username: ${MAIL_USER_EMAIL}
     password: ${MAIL_PASSWORD}
-    test-connection: true
     properties:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
     sender:
       email: notification-service@gmail.com
       text: no-reply

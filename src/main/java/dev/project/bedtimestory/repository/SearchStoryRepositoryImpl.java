@@ -9,33 +9,55 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
 @Repository
 @RequiredArgsConstructor
 public class SearchStoryRepositoryImpl implements SearchStoryRepository {
+
     private final EntityManager entityManager;
+
+    /**
+     * Build predicate for searching
+     *
+     * @param builder CriteriaBuilder
+     * @param root    root for query
+     * @param query   query text
+     * @return Predicate
+     */
+    private Predicate buildSearchPredicate(CriteriaBuilder builder, Root<Story> root, String query) {
+        String pattern = "%" + query.toLowerCase() + "%";
+        Predicate titlePredicate = builder.like(builder.lower(root.get("title")), pattern);
+        Predicate descPredicate = builder.like(builder.lower(root.get("description")), pattern);
+        Predicate textPredicate = builder.like(builder.lower(root.get("text")), pattern);
+        return builder.or(titlePredicate, descPredicate, textPredicate);
+    }
+
+    /**
+     * Build list of orders for sorting by specification
+     *
+     * @param builder CriteriaBuilder
+     * @param root    root for query
+     * @param sort    sort object from pageable
+     * @return List<Order>
+     */
+    private List<Order> buildOrders(CriteriaBuilder builder, Root<Story> root, Sort sort) {
+        return sort.stream()
+                .map(order -> order.isAscending()
+                        ? builder.asc(root.get(order.getProperty()))
+                        : builder.desc(root.get(order.getProperty())))
+                .toList();
+    }
+
     @Override
     public Page<StoryDto> searchStories(String query, Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<StoryDto> criteriaQuery = builder.createQuery(StoryDto.class);
         Root<Story> root = criteriaQuery.from(Story.class);
-
-        Predicate titlePredicate = builder.like(builder.lower(
-                root.get("title")),
-                "%" + query.toLowerCase() + "%");
-        Predicate descPredicate = builder.like(builder.lower(
-                        root.get("description")),
-                "%" + query.toLowerCase() + "%");
-        Predicate textPredicate = builder.like(builder.lower(
-                        root.get("text")),
-                "%" + query.toLowerCase() + "%");
-
-        Predicate finalPredicate = builder.or(titlePredicate, descPredicate, textPredicate);
-
+        Predicate predicate = buildSearchPredicate(builder, root, query);
         criteriaQuery.select(builder.construct(
                 StoryDto.class,
                 root.get("id"),
@@ -43,27 +65,21 @@ public class SearchStoryRepositoryImpl implements SearchStoryRepository {
                 root.get("description"),
                 root.get("imgUrl"),
                 root.get("likedCount")
-        )).where(finalPredicate);
+        )).where(predicate);
 
-        // Sorting
-        if (pageable.getSort().isSorted()) { // ! ?sort=likedCount,desc&sort=title,asc
-            List<Order> orders = pageable.getSort().stream()
-                    .map(order -> order.isAscending() // ! desc or asc
-                            ? builder.asc(root.get(order.getProperty()))
-                            : builder.desc(root.get(order.getProperty())))
-                    .toList();
-            criteriaQuery.orderBy(orders);
+        if (pageable.getSort().isSorted()) {
+            criteriaQuery.orderBy(buildOrders(builder, root, pageable.getSort()));
         }
 
-        TypedQuery<StoryDto> queryResult = entityManager.createQuery(criteriaQuery);
-        queryResult.setFirstResult((int) pageable.getOffset());
-        queryResult.setMaxResults(pageable.getPageSize());
-
-        List<StoryDto> content = queryResult.getResultList();
+        TypedQuery<StoryDto> typedQuery = entityManager.createQuery(criteriaQuery);
+        typedQuery.setFirstResult((int) pageable.getOffset());
+        typedQuery.setMaxResults(pageable.getPageSize());
+        List<StoryDto> content = typedQuery.getResultList();
 
         CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
         Root<Story> countRoot = countQuery.from(Story.class);
-        countQuery.select(builder.count(countRoot)).where(finalPredicate);
+        Predicate countPredicate = buildSearchPredicate(builder, countRoot, query);
+        countQuery.select(builder.count(countRoot)).where(countPredicate);
         Long total = entityManager.createQuery(countQuery).getSingleResult();
 
         return new PageImpl<>(content, pageable, total);

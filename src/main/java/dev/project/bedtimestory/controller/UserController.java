@@ -92,12 +92,4 @@ public class UserController {
                 storyId
         );
     }
-    @PutMapping("/subscribe")
-    public void subscribe(@AuthenticationPrincipal UserDetails userDetails) throws ServerException {
-        userService.subscribe(AuthUtils.getCurrentUserId(userDetails));
-    }
-    @PutMapping("/unsubscribe")
-    public void unsubscribe(@AuthenticationPrincipal UserDetails userDetails) throws ServerException {
-        userService.unsubscribe(AuthUtils.getCurrentUserId(userDetails));
-    }
 }

@@ -6,7 +6,9 @@ import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
 import dev.project.bedtimestory.service.StoryService;
 import dev.project.bedtimestory.utils.AuthUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.rmi.ServerException;
 
 @RestController
@@ -56,19 +59,20 @@ public class StoryController {
     
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void createStory(@Valid @RequestBody CreateStoryRequest request) {
-        storyService.createStory(request);
+    public ResponseEntity<StoryDto> createStory(@Valid @RequestBody CreateStoryRequest request) {
+        return ResponseEntity.ok(storyService.createStory(request));
     }
     @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateStory(@Valid @RequestBody UpdateStoryRequest request) {
-        storyService.updateStory(request);
+    public ResponseEntity<StoryDto> updateStory(@Valid @RequestBody UpdateStoryRequest request) {
+        return ResponseEntity.ok(storyService.updateStory(request));
     }
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStory(
+            @NotNull HttpServletResponse response,
             @RequestParam("storyId") Long storyId,
-            @AuthenticationPrincipal UserDetails userDetails) throws ServerException {
-        storyService.deleteStory(storyId, AuthUtils.getCurrentUserId(userDetails));
+            @AuthenticationPrincipal UserDetails userDetails) throws IOException {
+        storyService.deleteStory(storyId, AuthUtils.getCurrentUserId(userDetails), response);
     }
 }

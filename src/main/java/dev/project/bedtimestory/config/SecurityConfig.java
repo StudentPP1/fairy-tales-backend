@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,8 +54,8 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(applicationProperties.getAllowedOrigins());
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
         corsConfigurationSource.registerCorsConfiguration("/**", configuration);
         return corsConfigurationSource;
@@ -69,17 +70,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/csrf-token").permitAll()
                         .requestMatchers("/api/logout").permitAll()
-                        .requestMatchers("/api/oauth2/**").permitAll()
+                        .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/story/topStories").permitAll()
+                        .requestMatchers("/api/story/getStories").permitAll()
+                        .requestMatchers("/api/story/search").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(auth -> {
                         auth.loginPage(applicationProperties.getFrontUrl());
                         auth.successHandler(oAuth2LoginSuccessHandler);
                         auth.redirectionEndpoint(endPoint ->
-                                endPoint.baseUri("/api/oauth2/callback/*"));
+                                endPoint.baseUri("/oauth2/callback/*"));
                         auth.authorizationEndpoint(endPoint ->
-                                endPoint.baseUri("/api/oauth2/authorize/*"));
+                                endPoint.baseUri("/oauth2/authorize/*"));
                 })
                 .addFilterAfter(accessTokenFilter, OAuth2LoginAuthenticationFilter.class)
                 .addFilterAfter(refreshTokenFilter, AccessTokenFilter.class)
