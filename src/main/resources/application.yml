@@ -48,7 +48,7 @@ server:
     session:
       cookie:
         same-site: lax # to allow oauth2 & sending cookie
-  port: 8080
+  port: 8081
 logging:
   level:
     liquibase: trace
