@@ -55,6 +55,7 @@ public class User extends BaseEntity {
     public User(OAuth2User oAuth2User) {
         this.email = oAuth2User.getAttribute("email");
         this.name = oAuth2User.getAttribute("name");
+        this.password = "";
         this.role = Role.USER;
     }
     public void addLikedStory(Story story) {
