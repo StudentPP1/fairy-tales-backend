@@ -10,6 +10,7 @@ import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,7 @@ public class UserService {
                 .isSubscribed(user.isSubscribed())
                 .build();
     }
+    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     @Transactional
     public void addLikedStory(Long userId, Long storyId) {
         log.info("UserService: addLikedStory");
@@ -71,13 +73,7 @@ public class UserService {
         userRepository.save(user);
         storyRepository.save(story);
     }
-    @Transactional
-    public void addReadStory(Long userId, Long storyId) {
-        log.info("UserService: addReadStory");
-        User user = helperService.getUserById(userId);
-        user.addReadStory(helperService.getStoryById(storyId));
-        userRepository.save(user);
-    }
+    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     @Transactional
     public void removeLikedStory(Long userId, Long storyId) {
         log.info("UserService: removeLikedStory");
@@ -88,6 +84,15 @@ public class UserService {
         userRepository.save(user);
         storyRepository.save(story);
     }
+    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
+    @Transactional
+    public void addReadStory(Long userId, Long storyId) {
+        log.info("UserService: addReadStory");
+        User user = helperService.getUserById(userId);
+        user.addReadStory(helperService.getStoryById(storyId));
+        userRepository.save(user);
+    }
+    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     @Transactional
     public void removeReadStory(Long userId, Long storyId) {
         log.info("UserService: removeReadStory");

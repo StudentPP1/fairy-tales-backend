@@ -15,4 +15,14 @@ public class StoryDto implements Serializable {
     private String description;
     private String imgUrl;
     private int likedCount;
+    @Override
+    public String toString() {
+        return "StoryDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", likedCount=" + likedCount +
+                '}';
+    }
 }

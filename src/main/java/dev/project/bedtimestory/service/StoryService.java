@@ -69,6 +69,7 @@ public class StoryService {
         return searchStoryRepository.searchStories(query.toLowerCase(), pageable);
     }
 
+    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     @Transactional
     public StoryDto updateStory(UpdateStoryRequest request) {
         log.info("StoryService: updateStory -> {}", request);
@@ -86,6 +87,7 @@ public class StoryService {
                 story.getLikedCount()
         );
     }
+    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     public StoryDto createStory(CreateStoryRequest request) {
         log.info("StoryService: createStory -> {}", request);
         Story story = new Story();
