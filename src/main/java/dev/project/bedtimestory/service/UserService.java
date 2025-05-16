@@ -84,7 +84,7 @@ public class UserService {
         userRepository.save(user);
         storyRepository.save(story);
     }
-    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
+    @CacheEvict(value = {"notReadStories"}, key = "#userId")
     @Transactional
     public void addReadStory(Long userId, Long storyId) {
         log.info("UserService: addReadStory");
@@ -92,7 +92,7 @@ public class UserService {
         user.addReadStory(helperService.getStoryById(storyId));
         userRepository.save(user);
     }
-    @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
+    @CacheEvict(value = {"notReadStories"}, key = "#userId")
     @Transactional
     public void removeReadStory(Long userId, Long storyId) {
         log.info("UserService: removeReadStory");
