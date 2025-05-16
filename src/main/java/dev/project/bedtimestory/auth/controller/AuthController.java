@@ -4,6 +4,7 @@ import dev.project.bedtimestory.auth.service.AuthService;
 import dev.project.bedtimestory.request.UserLoginRequest;
 import dev.project.bedtimestory.request.UserRegisterRequest;
 import dev.project.bedtimestory.response.AuthenticationResponse;
+import dev.project.bedtimestory.response.InformResponse;
 import dev.project.bedtimestory.utils.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public  ResponseEntity<AuthenticationResponse> login(
+    public ResponseEntity<AuthenticationResponse> login(
             @NonNull HttpServletResponse response,
             @RequestBody @Valid UserLoginRequest userLoginRequest) {
         log.info("AuthController: call service to login user");
@@ -46,11 +47,12 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public void logout(
+    public ResponseEntity<InformResponse> logout(
             @NonNull HttpServletResponse response,
             @NonNull HttpServletRequest request) {
         log.info("AuthController: logout user");
         CookieUtils.deleteCookies(request, response);
         SecurityContextHolder.clearContext();
+        return ResponseEntity.ok(new InformResponse("logout successfully"));
     }
 }

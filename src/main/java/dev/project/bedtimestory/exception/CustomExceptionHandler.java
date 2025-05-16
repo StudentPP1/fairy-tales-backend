@@ -42,7 +42,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         });
         HttpErrorResponse response = HttpErrorResponse.of(
                 "Unprocessable entity",
-                422,
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 errors,
                 generalErrors);
         return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -51,7 +51,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<HttpErrorResponse> handleException(final ApiException exception) {
         logger.error("Handing BadCredentialsException: {}", exception.getMessage());
-        var response = HttpErrorResponse.of("Unexpected error", exception.getStatus());
+        var response = HttpErrorResponse.of(exception.getMessage(), exception.getStatus());
         return new ResponseEntity<>(response, HttpStatusCode.valueOf(exception.getStatus()));
     }
 
@@ -59,7 +59,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<HttpErrorResponse> handleException(final Exception exception) {
         logger.error("Unhandled exception: {}", exception.getMessage());
-        var response = HttpErrorResponse.of("Unexpected error", 500);
+        var response = HttpErrorResponse.of(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
