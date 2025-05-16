@@ -4,11 +4,10 @@ import dev.project.bedtimestory.dto.StoryDetailsDto;
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
+import dev.project.bedtimestory.response.InformResponse;
 import dev.project.bedtimestory.service.StoryService;
 import dev.project.bedtimestory.utils.AuthUtils;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,10 +68,10 @@ public class StoryController {
     }
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteStory(
-            @NotNull HttpServletResponse response,
+    public ResponseEntity<InformResponse> deleteStory(
             @RequestParam("storyId") Long storyId,
             @AuthenticationPrincipal UserDetails userDetails) throws IOException {
-        storyService.deleteStory(storyId, AuthUtils.getCurrentUserId(userDetails), response);
+        storyService.deleteStory(storyId, AuthUtils.getCurrentUserId(userDetails));
+        return ResponseEntity.ok(new InformResponse("story deleted successfully"));
     }
 }

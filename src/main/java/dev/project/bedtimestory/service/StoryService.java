@@ -11,8 +11,6 @@ import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
 import dev.project.bedtimestory.service.notification.NotificationService;
-import dev.project.bedtimestory.utils.ApplicationProperties;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,7 +34,6 @@ public class StoryService {
     private final UserRepository userRepository;
     private final HelperService helperService;
     private final NotificationService notificationService;
-    private final ApplicationProperties applicationProperties;
 
     public Story getStoryById(Long storyId) {
         return storyRepository.findById(storyId)
@@ -107,7 +103,7 @@ public class StoryService {
     }
     @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     @Transactional
-    public void deleteStory(Long storyId, Long userId, HttpServletResponse response) throws IOException {
+    public void deleteStory(Long storyId, Long userId) {
         log.info("StoryService: deleteStory -> {}", storyId);
         Story story = getStoryById(storyId);
         User user = helperService.getUserById(userId);
@@ -115,6 +111,5 @@ public class StoryService {
         user.setLikedStories(user.getLikedStories().stream().filter(s -> !Objects.equals(s.getId(), storyId)).collect(Collectors.toList()));
         storyRepository.delete(story);
         userRepository.save(user);
-        response.sendRedirect(applicationProperties.getFrontUrl());
     }
 }
