@@ -14,7 +14,7 @@ A full-featured Java Spring Boot backend for a bedtime stories platform. Include
 - **JWT (JSON Web Tokens)**
 - **Spring Data JPA (PostgreSQL)**
 - **Liquibase** – database migrations
-- **Redis** – caching and sessions
+- **Redis** – caching
 - **Spring Mail** – email sending
 - **Thymeleaf** – templating engine
 - **Dotenv** (`spring-dotenv`)
