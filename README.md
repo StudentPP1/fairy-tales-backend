@@ -3,6 +3,8 @@
 ### Overview
 A full-featured Java Spring Boot backend for a bedtime stories platform. Includes user authentication, OAuth2 login, email support, PostgreSQL database, Redis caching, and Dockerized deployment.
 
+➡️ Frontend: [fairy-tales-frontend](https://github.com/StudentPP1/fairy-tales-backend)
+
 ---
 
 ### Tech Stack
