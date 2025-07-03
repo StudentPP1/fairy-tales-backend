@@ -1,10 +1,7 @@
 package dev.project.bedtimestory.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -27,18 +26,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest // ! enable JPA-components in context (repositories, entityManager)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // ! don't connect in-memory db
 @TestPropertySource(properties = {
-        "spring.jpa.hibernate.ddl-auto=none",
+        "spring.jpa.hibernate.ddl-auto=validate",
         "spring.liquibase.enabled=true"
 })
 class StoryRepositoryTest {
-    private final static int MIGRATION_ADDED_STORY_COUNT = 3;
+    private static final int MIGRATION_ADDED_STORY_COUNT = 4;
+
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
             .withDatabaseName("testdb")
-            .withUsername("user")
+            .withUsername("username")
             .withPassword("password");
 
     @DynamicPropertySource
@@ -55,7 +55,7 @@ class StoryRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    void findMostLikedStories() {
+    void shouldReturnMostLikedStoriesSortedByLikes() {
         storyRepository.save(new Story("T1", "D1", "img", "text", 10));
         storyRepository.save(new Story("T2", "D2", "img", "text", 20));
 
@@ -65,7 +65,7 @@ class StoryRepositoryTest {
     }
 
     @Test
-    void findNotReadStories() {
+    void shouldReturnOnlyNotReadStories() {
         Story s1 = storyRepository.save(new Story("S1", "Desc", "img", "text", 0));
         storyRepository.save(new Story("S2", "Desc", "img", "text", 0));
         User user = userRepository.save(new User("User", "user@mail.com", null, "pass", Role.USER, false,
@@ -79,7 +79,7 @@ class StoryRepositoryTest {
     }
 
     @Test
-    void findStories() {
+    void shouldReturnAllStoriesWithExpectedTitlesAndCount() {
         storyRepository.save(new Story("Story 1", "Desc 1", "img1", "text1", 5));
         storyRepository.save(new Story("Story 2", "Desc 2", "img2", "text2", 10));
         storyRepository.save(new Story("Story 3", "Desc 3", "img3", "text3", 15));
@@ -91,9 +91,8 @@ class StoryRepositoryTest {
         assertTrue(titles.containsAll(List.of("Story 1", "Story 2", "Story 3")));
     }
 
-
     @Test
-    void getStoryDetailsDto() {
+    void shouldReturnStoryDetailsDtoWithCorrectTitleAndLikedAndReadFlags() {
         Story story = storyRepository.save(new Story("Story", "Desc", "img", "txt", 5));
         ArrayList<Story> stories = new ArrayList<>();
         stories.add(story);
