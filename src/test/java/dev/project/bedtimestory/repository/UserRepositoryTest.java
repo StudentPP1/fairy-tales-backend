@@ -17,7 +17,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +27,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(properties = {
-        "spring.jpa.hibernate.ddl-auto=none",
+        "spring.jpa.hibernate.ddl-auto=validate",
         "spring.liquibase.enabled=true"
 })
-public class UserRepositoryTest {
+class UserRepositoryTest {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
@@ -49,11 +49,12 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private TestEntityManager em;
+    private TestEntityManager em; // ! wrapper of entity manager
 
     @Test
-    void getUserDtoById() {
-        User user = new User("John", "john@mail.com", null, "pass", Role.USER, false, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    void shouldReturnUserDtoByIdWithExpectedEmail() {
+        User user = new User("John", "john@mail.com", null, "pass", Role.USER,
+                false, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         user = em.persist(user);
         em.flush();
 
@@ -63,9 +64,10 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void findReadStoryByUserId() {
+    void shouldReturnReadStoryByUserIdWithExpectedTitle() {
         Story story = em.persist(new Story("Title", "Desc", "img", "Text", 3));
-        User user = new User("Reader", "read@mail.com", null, "pass", Role.USER, false, new ArrayList<>(), List.of(story), new ArrayList<>());
+        User user = new User("Reader", "read@mail.com", null, "pass", Role.USER,
+                false, Collections.emptyList(), List.of(story), Collections.emptyList());
         user = em.persist(user);
         em.flush();
 
@@ -75,9 +77,10 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void findLikedStoryByUserId() {
+    void shouldReturnLikedStoryByUserIdWithExpectedLikedCount() {
         Story story = em.persist(new Story("Like", "Desc", "img", "Text", 10));
-        User user = new User("Liker", "like@mail.com", null, "pass", Role.USER, false, new ArrayList<>(), new ArrayList<>(), List.of(story));
+        User user = new User("Liker", "like@mail.com", null, "pass", Role.USER,
+                false, Collections.emptyList(), Collections.emptyList(), List.of(story));
         user = em.persist(user);
         em.flush();
 
@@ -85,10 +88,13 @@ public class UserRepositoryTest {
         assertThat(stories).hasSize(1);
         assertThat(stories.get(0).getLikedCount()).isEqualTo(10);
     }
+
     @Test
-    void getSubscribedEmails() {
-        em.persist(new User("Sub", "sub@mail.com", null, "pass", Role.USER, true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-        em.persist(new User("Unsub", "unsub@mail.com", null, "pass", Role.USER, false, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+    void shouldReturnSubscribedEmails() {
+        em.persist(new User("Sub", "sub@mail.com", null, "pass", Role.USER,
+                true, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
+        em.persist(new User("Unsub", "unsub@mail.com", null, "pass", Role.USER,
+                false, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
         em.flush();
 
         List<String> emails = userRepository.getSubscribedEmails();
