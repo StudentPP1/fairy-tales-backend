@@ -55,6 +55,16 @@ class StoryRepositoryTest {
     private UserRepository userRepository;
 
     @Test
+    void shouldReturnMigrationLoadedDataWithExpectedCountAndTitles() {
+        List<Story> stories = storyRepository.findAll();
+        assertEquals(MIGRATION_ADDED_STORY_COUNT, stories.size());
+        assertEquals("Ivasyk-Telesyk", stories.get(0).getTitle());
+        assertEquals("Little Red Riding Hood", stories.get(1).getTitle());
+        assertEquals("The Ugly Duckling", stories.get(2).getTitle());
+        assertEquals("Winnie-the-Pooh", stories.get(3).getTitle());
+    }
+
+    @Test
     void shouldReturnMostLikedStoriesSortedByLikes() {
         storyRepository.save(new Story("T1", "D1", "img", "text", 10));
         storyRepository.save(new Story("T2", "D2", "img", "text", 20));
