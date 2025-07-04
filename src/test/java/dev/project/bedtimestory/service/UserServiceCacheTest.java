@@ -1,6 +1,7 @@
 package dev.project.bedtimestory.service;
 
 import dev.project.bedtimestory.config.PostgreSQLContainerInitializer;
+import dev.project.bedtimestory.config.RedisContainerInitializer;
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.entity.User;
@@ -13,11 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
@@ -28,17 +25,8 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Testcontainers
-@ContextConfiguration(initializers = PostgreSQLContainerInitializer.class)
+@ContextConfiguration(initializers = {PostgreSQLContainerInitializer.class, RedisContainerInitializer.class})
 class UserServiceCacheTest {
-
-    @Container
-    static GenericContainer<?> redis = new GenericContainer<>("redis:7").withExposedPorts(6379);
-
-    @DynamicPropertySource
-    static void redisProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.redis.host", redis::getHost);
-        registry.add("spring.data.redis.port", () -> redis.getMappedPort(6379));
-    }
 
     @Autowired
     private UserService userService;

@@ -5,6 +5,7 @@ import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
 import dev.project.bedtimestory.response.InformResponse;
+import dev.project.bedtimestory.response.PageWrapper;
 import dev.project.bedtimestory.service.StoryService;
 import dev.project.bedtimestory.utils.AuthUtils;
 import jakarta.validation.Valid;
@@ -37,11 +38,11 @@ public class StoryController {
     }
 
     @GetMapping("/topStories")
-    public ResponseEntity<Page<StoryDto>> getMostLikedStories(Pageable pageable) {
+    public ResponseEntity<PageWrapper<StoryDto>> getMostLikedStories(Pageable pageable) {
         return ResponseEntity.ok(storyService.getMostLikedStories(pageable));
     }
     @GetMapping("/notReadStories")
-    public ResponseEntity<Page<StoryDto>> getNotReadStories(
+    public ResponseEntity<PageWrapper<StoryDto>> getNotReadStories(
             Pageable pageable,
             @AuthenticationPrincipal UserDetails userDetails
     ) throws ServerException {
@@ -52,7 +53,7 @@ public class StoryController {
         return ResponseEntity.ok(storyService.getStories(pageable));
     }
     @GetMapping("/search")
-    public ResponseEntity<Page<StoryDto>> searchStories(@RequestParam("query") String query, Pageable pageable) {
+    public ResponseEntity<PageWrapper<StoryDto>> searchStories(@RequestParam("query") String query, Pageable pageable) {
         return ResponseEntity.ok(storyService.searchStories(query, pageable));
     }
     

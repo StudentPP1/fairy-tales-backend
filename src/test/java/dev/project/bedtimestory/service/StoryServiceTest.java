@@ -8,6 +8,7 @@ import dev.project.bedtimestory.repository.StoryRepository;
 import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
+import dev.project.bedtimestory.response.PageWrapper;
 import dev.project.bedtimestory.service.notification.NotificationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,7 +83,7 @@ class StoryServiceTest {
 
         when(storyRepository.findMostLikedStories(pageable)).thenReturn(page);
 
-        Page<StoryDto> result = storyService.getMostLikedStories(pageable);
+        PageWrapper<StoryDto> result = storyService.getMostLikedStories(pageable);
 
         assertEquals(1, result.getTotalElements());
         assertEquals(dto, result.getContent().get(0));
@@ -99,7 +100,7 @@ class StoryServiceTest {
 
         when(storyRepository.findNotReadStories(userId, pageable)).thenReturn(page);
 
-        Page<StoryDto> result = storyService.getNotReadStories(pageable, userId);
+        PageWrapper<StoryDto> result = storyService.getNotReadStories(pageable, userId);
 
         assertEquals(1, result.getTotalElements());
         assertEquals(dto, result.getContent().get(0));
@@ -132,7 +133,7 @@ class StoryServiceTest {
 
         when(storyRepository.searchStories(query, pageable)).thenReturn(page);
 
-        Page<StoryDto> result = storyService.searchStories(query, pageable);
+        PageWrapper<StoryDto> result = storyService.searchStories(query, pageable);
 
         assertEquals(1, result.getTotalElements());
         assertEquals(dto, result.getContent().get(0));
