@@ -31,8 +31,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class) // ! activate annotations for MockMvc
 class UserServiceTest {
+
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private StoryRepository storyRepository;
 
