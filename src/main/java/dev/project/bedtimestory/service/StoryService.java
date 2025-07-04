@@ -5,7 +5,6 @@ import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.exception.ApiException;
-import dev.project.bedtimestory.repository.SearchStoryRepository;
 import dev.project.bedtimestory.repository.StoryRepository;
 import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.CreateStoryRequest;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoryService {
     private final StoryRepository storyRepository;
-    private final SearchStoryRepository searchStoryRepository;
     private final UserRepository userRepository;
     private final HelperService helperService;
     private final NotificationService notificationService;
@@ -62,7 +60,7 @@ public class StoryService {
     }
     @Cacheable(value = "searchStories", key = "#query.toLowerCase()")
     public Page<StoryDto> searchStories(String query, Pageable pageable) {
-        return searchStoryRepository.searchStories(query.toLowerCase(), pageable);
+        return storyRepository.searchStories(query.toLowerCase(), pageable);
     }
 
     @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
