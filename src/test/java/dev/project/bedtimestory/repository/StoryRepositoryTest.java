@@ -1,5 +1,6 @@
 package dev.project.bedtimestory.repository;
 
+import dev.project.bedtimestory.config.PostgreSQLContainerInitializer;
 import dev.project.bedtimestory.dto.StoryDetailsDto;
 import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Role;
@@ -11,11 +12,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
@@ -32,21 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         "spring.jpa.hibernate.ddl-auto=validate",
         "spring.liquibase.enabled=true"
 })
+@ContextConfiguration(initializers = PostgreSQLContainerInitializer.class)
 class StoryRepositoryTest {
     private static final int MIGRATION_ADDED_STORY_COUNT = 4;
-
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
-            .withDatabaseName("testdb")
-            .withUsername("username")
-            .withPassword("password");
-
-    @DynamicPropertySource
-    static void registerPgProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
 
     @Autowired
     private StoryRepository storyRepository;
