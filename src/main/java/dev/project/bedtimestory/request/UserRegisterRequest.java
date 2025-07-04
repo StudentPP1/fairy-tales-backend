@@ -4,10 +4,14 @@ import dev.project.bedtimestory.validation.Unique;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegisterRequest {
     @NotNull(message = "The name field field should not be null")
     @NotEmpty(message = "The name field should not be empty")

@@ -5,6 +5,7 @@ import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
 import dev.project.bedtimestory.response.InformResponse;
+import dev.project.bedtimestory.response.PageWrapper;
 import dev.project.bedtimestory.service.StoryService;
 import dev.project.bedtimestory.utils.AuthUtils;
 import jakarta.validation.Valid;
@@ -37,37 +38,42 @@ public class StoryController {
     }
 
     @GetMapping("/topStories")
-    public ResponseEntity<Page<StoryDto>> getMostLikedStories(Pageable pageable) {
+    public ResponseEntity<PageWrapper<StoryDto>> getMostLikedStories(Pageable pageable) {
         return ResponseEntity.ok(storyService.getMostLikedStories(pageable));
     }
+
     @GetMapping("/notReadStories")
-    public ResponseEntity<Page<StoryDto>> getNotReadStories(
+    public ResponseEntity<PageWrapper<StoryDto>> getNotReadStories(
             Pageable pageable,
             @AuthenticationPrincipal UserDetails userDetails
     ) throws ServerException {
         return ResponseEntity.ok(storyService.getNotReadStories(pageable, AuthUtils.getCurrentUserId(userDetails)));
     }
+
     @GetMapping("/getStories")
     public ResponseEntity<Page<StoryDto>> getStories(Pageable pageable) {
         return ResponseEntity.ok(storyService.getStories(pageable));
     }
+
     @GetMapping("/search")
-    public ResponseEntity<Page<StoryDto>> searchStories(@RequestParam("query") String query, Pageable pageable) {
+    public ResponseEntity<PageWrapper<StoryDto>> searchStories(@RequestParam("query") String query, Pageable pageable) {
         return ResponseEntity.ok(storyService.searchStories(query, pageable));
     }
     
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StoryDto> createStory(@RequestBody @Valid CreateStoryRequest request) {
         return ResponseEntity.ok(storyService.createStory(request));
     }
+
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<StoryDto> updateStory(@RequestBody @Valid UpdateStoryRequest request) {
         return ResponseEntity.ok(storyService.updateStory(request));
     }
+
     @DeleteMapping("/delete")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<InformResponse> deleteStory(
             @RequestParam("storyId") Long storyId,
             @AuthenticationPrincipal UserDetails userDetails) throws IOException {

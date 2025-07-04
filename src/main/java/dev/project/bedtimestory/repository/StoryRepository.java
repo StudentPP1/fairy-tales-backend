@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface StoryRepository extends JpaRepository<Story, Long> {
+public interface StoryRepository extends JpaRepository<Story, Long>, SearchStoryRepository {
     @Query("""
     SELECT new dev.project.bedtimestory.dto.StoryDto(
         s.id, s.title, s.description, s.imgUrl, s.likedCount

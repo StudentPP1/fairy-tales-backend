@@ -5,11 +5,11 @@ import dev.project.bedtimestory.dto.StoryDto;
 import dev.project.bedtimestory.entity.Story;
 import dev.project.bedtimestory.entity.User;
 import dev.project.bedtimestory.exception.ApiException;
-import dev.project.bedtimestory.repository.SearchStoryRepository;
 import dev.project.bedtimestory.repository.StoryRepository;
 import dev.project.bedtimestory.repository.UserRepository;
 import dev.project.bedtimestory.request.CreateStoryRequest;
 import dev.project.bedtimestory.request.UpdateStoryRequest;
+import dev.project.bedtimestory.response.PageWrapper;
 import dev.project.bedtimestory.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoryService {
     private final StoryRepository storyRepository;
-    private final SearchStoryRepository searchStoryRepository;
     private final UserRepository userRepository;
     private final HelperService helperService;
     private final NotificationService notificationService;
@@ -43,28 +42,27 @@ public class StoryService {
         return storyRepository.getStoryDetailsDto(storyId, userId)
                 .orElseThrow(() -> new ApiException("Story not found", HttpStatus.NOT_FOUND.value()));
     }
-    @Cacheable(value = "mostLikedStories")
-    public Page<StoryDto> getMostLikedStories(Pageable pageable) {
-        Page<StoryDto> stories = storyRepository.findMostLikedStories(pageable);
-        log.info("mostLikedStories: {}", Arrays.toString(stories.getContent().toArray()));
-        return stories;
-    }
-    @Cacheable(value = "notReadStories", key = "#userId")
-    public Page<StoryDto> getNotReadStories(Pageable pageable, Long userId) {
-        Page<StoryDto> stories = storyRepository.findNotReadStories(userId, pageable);
-        log.info("notReadStories: {}", Arrays.toString(stories.getContent().toArray()));
-        return stories;
-    }
     public Page<StoryDto> getStories(Pageable pageable) {
         Page<StoryDto> stories = storyRepository.findStories(pageable);
         log.info("getStories: {}", Arrays.toString(stories.getContent().toArray()));
         return stories;
     }
-    @Cacheable(value = "searchStories", key = "#query.toLowerCase()")
-    public Page<StoryDto> searchStories(String query, Pageable pageable) {
-        return searchStoryRepository.searchStories(query.toLowerCase(), pageable);
+    @Cacheable(value = "mostLikedStories")
+    public PageWrapper<StoryDto> getMostLikedStories(Pageable pageable) {
+        Page<StoryDto> stories = storyRepository.findMostLikedStories(pageable);
+        log.info("mostLikedStories: {}", Arrays.toString(stories.getContent().toArray()));
+        return PageWrapper.of(stories);
     }
-
+    @Cacheable(value = "notReadStories", key = "#userId")
+    public PageWrapper<StoryDto> getNotReadStories(Pageable pageable, Long userId) {
+        Page<StoryDto> stories = storyRepository.findNotReadStories(userId, pageable);
+        log.info("notReadStories: {}", Arrays.toString(stories.getContent().toArray()));
+        return PageWrapper.of(stories);
+    }
+    @Cacheable(value = "searchStories", key = "#query.toLowerCase()")
+    public PageWrapper<StoryDto> searchStories(String query, Pageable pageable) {
+        return PageWrapper.of(storyRepository.searchStories(query.toLowerCase(), pageable));
+    }
     @CacheEvict(value = {"mostLikedStories", "notReadStories", "searchStories"}, allEntries = true)
     @Transactional
     public StoryDto updateStory(UpdateStoryRequest request) {
